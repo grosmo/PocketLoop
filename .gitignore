@@ -1,0 +1,17 @@
+# Gradle
+.gradle/
+build/
+
+# VS Code
+.vscode/
+
+# Java (optional, aber praktisch)
+*.class
+*.jar
+*.war
+*.ear
+hs_err_pid*
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,58 @@
+// Gradle-Plugins fuer dieses Projekt auswaehlen
+plugins {
+    // Java-Applikation bauen
+    id 'application'
+    // Plugin fuer JavaFX-Projekte
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+java {
+    toolchain {
+        languageVersion = JavaLanguageVersion.of(21)
+    }
+}
+
+// CSS-Dateien aus dem Java-Verzeichnis als Ressourcen behandeln
+sourceSets {
+    main {
+        resources {
+            srcDirs = ['src/main/resources', 'src/main/java']
+            include '**/*.png', '**/*.jpg', '**/*.gif', '**/*.css', '**/*.fxml', '**/*.m3u', '**/*.wav', '**/*.mp3'
+        }
+    }
+}
+
+application {
+    // Paketpfad und Namen Ihrer "main"-Klasse, bitte ggf. anpassen
+    mainClass = "StarterApp"
+}
+
+// Verwendung des FX-Plugins: FX-Version und Module wuenschen
+javafx {
+    version = "21"
+    modules = [ 'javafx.controls', 'javafx.fxml' ]
+}
+
+// Zusaetzlich benoetigte Abhaengigkeiten
+dependencies {
+	implementation fileTree('libs') { include '*.jar' }
+}
+
+// Abhaengigkeiten herunterladen von...
+repositories {
+    mavenCentral()
+    maven{
+        name = "TarsosDSP repository"
+        url = "https://mvn.0110.be/releases"
+    }
+}
+
+tasks.named('startScripts') {
+    doLast {
+        def windowsScriptFile = file getWindowsScript()
+        def unixScriptFile = file getUnixScript()
+        
+        windowsScriptFile.text = windowsScriptFile.text.replace('@echo off', '@echo off\nsetlocal enabledelayedexpansion')
+        unixScriptFile.text = unixScriptFile.text.replace('#!/bin/sh', '#!/bin/bash')
+    }
+}

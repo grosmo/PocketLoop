@@ -1,0 +1,408 @@
+/*
+	-> F A R B E N   R E S S O U R C E N
+*/
+.root {
+    /* Primärfarben */
+    -primary-purple: #3f065c;
+    -primary-green: #00b4a0;
+    
+    /* Neutrale Farben */
+    -color-white: white;
+    -color-black: black;
+    -color-gray: rgb(104, 105, 105);
+    -color-lightgray: lightgray;
+    
+    /* Grautöne für UI-Komponenten */
+    -color-dark-gray: rgb(51, 51, 51);           /* 0.2 * 255 */
+    -color-medium-gray: rgb(76, 76, 76);          /* 0.3 * 255 */
+    -color-gray-80: rgb(80, 80, 80);
+    -color-gray-overlay: rgba(100, 100, 100, 0.6);
+    -color-gray-border: rgb(128, 128, 128);       /* 0.5 * 255 */
+    
+    /* Transparenz */
+    -color-transparent: transparent;
+}
+
+/*
+	-> G L O B A L E   S T Y L I N G
+*/
+*:focused {
+    -fx-focus-color: -color-transparent;
+    -fx-faint-focus-color: -color-transparent;
+}
+
+/*
+	-> E F F E K T E   S I D E B A R
+*/
+.effekte-sidebar {
+	-fx-background-color: -color-white; 
+	-fx-border-color: -color-black; 
+	-fx-border-width: 1px; 
+	-fx-border-radius: 5px; 
+	-fx-background-radius: 5px;
+	-fx-background-insets: 2px;
+	-fx-border-insets: 2px;
+	-fx-padding: 10px;
+}
+
+.effekte-sidebar:focused {
+	-fx-focus-color: -color-transparent;
+	-fx-faint-focus-color: -color-transparent;
+	/* -fx-padding: 10px; */
+}
+
+.button-box{
+	-fx-background-color: -color-white; 
+	-fx-border-color: -color-black; 
+	-fx-border-width: 1px; 
+	-fx-border-radius: 2px; 
+	-fx-background-radius: 2px;
+	-fx-background-insets: 2px;
+	-fx-border-insets: 1px;
+	-fx-padding: 5px;
+}
+
+/*
+	-> W A V E F O R M   C A N V A S
+*/
+.waveform-canvas {
+	-fx-background-color: -color-white; 
+	-fx-border-color: -color-black; 
+	-fx-border-width: 2px, 0px, 2px, 0px;
+	/* -fx-border-radius: 4px; 
+	-fx-background-radius: 4px; */
+}
+
+/* Waveform-Farben (für JavaFX Canvas werden diese über Lookups zugänglich) */
+.waveform-canvas {
+	/* Canvas-spezifische Farben als fx-properties */
+	-waveform-background: -color-white;
+	-waveform-line: -color-black;
+	-waveform-centerline: -color-gray-80;
+	-waveform-overlay: -color-gray-overlay;
+	-waveform-handle: -color-black;
+}
+
+/*
+	-> A N I M A T E D   T O G G L E
+*/
+.animated-toggle {
+	/* Toggle Container */
+	-fx-alignment: center-left;
+	-fx-spacing: 10;
+}
+
+/* Toggle-Farben (für JavaFX Shape-Objekte über Lookups zugänglich) */
+.animated-toggle {
+	-toggle-background-off: -color-medium-gray;
+	-toggle-background-on: -primary-green;
+	-toggle-border: -color-gray-border;
+	-toggle-thumb: -color-white;
+}
+
+/*
+	-> R O T A R Y   K N O B
+*/
+.rotary-knob {
+	/* Knob-spezifische Eigenschaften */
+	-fx-min-width: 50;
+	-fx-min-height: 50;
+}
+
+/* Knob-Farben (für JavaFX Canvas werden diese über Lookups zugänglich) */
+.rotary-knob {
+	-knob-track: -color-medium-gray;
+	-knob-value: -primary-green;
+	-knob-body: -color-dark-gray;
+	-knob-indicator: -color-white;
+}
+
+/*
+	->   S A V E   E F F E C T   B U T T O N
+*/
+
+.btn-save-effect {
+	-fx-background-color: -color-transparent;
+	-fx-border-color: -color-black;
+	-fx-border-width: 1;
+	-fx-border-radius: 3;
+}
+
+.btn-save-effect:hover {
+	-fx-background-color: -primary-green;
+	-fx-text-fill: -color-white;
+}
+
+/*
+	->   C U S T O M   A L E R T
+*/
+
+.custom-dialog.dialog-pane {
+	-fx-background-color: -color-white;
+	/* -fx-text-fill: white; */
+}
+
+.custom-dialog.dialog-pane .content.label {
+	-fx-text-fill: black;
+}
+
+.custom-dialog.dialog-pane .button-bar .button {
+    -fx-background-color: -color-white;
+    -fx-text-fill: -color-black;
+	-fx-border-color: -primary-purple;
+	-fx-border-radius: 5px; 
+	-fx-background-radius: 5px;
+}
+
+.custom-dialog.dialog-pane .button-bar .button:hover {
+    -fx-background-color: -primary-purple;
+	-fx-text-fill: -color-white;
+}
+
+.custom-dialog.dialog-pane .button-bar .button:pressed {
+    -fx-background-color: -primary-purple;
+}
+
+.custom-alert.dialog-pane .graphic-container {
+    -fx-background-image: url("/icons/fancy_info.png");
+    -fx-background-size: 48px 48px;
+    -fx-background-repeat: no-repeat;
+	-fx-background-position: 5px 12px;
+    -fx-min-width: 48px;
+    -fx-min-height:48px;
+}
+
+/* Das Standard-Icon verstecken */
+.custom-alert.dialog-pane .graphic-container > * {
+    -fx-opacity: 0;
+}
+
+.custom-rename.dialog-pane .graphic-container {
+    -fx-background-image: url("/icons/fancy_rename.png");
+    -fx-background-size: 48px 48px;
+    -fx-background-repeat: no-repeat;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+}
+
+/* Das Standard-Icon verstecken */
+.custom-rename.dialog-pane .graphic-container > * {
+    -fx-opacity: 0;
+}
+
+.custom-frage.dialog-pane .graphic-container {
+    -fx-background-image: url("/icons/fancy_frage.png");
+    -fx-background-size: 48px 48px;
+    -fx-background-repeat: no-repeat;
+    -fx-min-width: 48px;
+    -fx-min-height: 48px;
+}
+
+/* Das Standard-Icon verstecken */
+.custom-frage.dialog-pane .graphic-container > * {
+    -fx-opacity: 0;
+}
+
+/*
+	->   S P L I T   P A N E
+*/
+
+.split-pane:horizontal > .split-pane-divider {
+   /* -fx-padding: 1; */
+   -fx-background-color: -color-gray;
+}
+
+
+/*
+	->   L I S T   V I E W
+*/
+
+.list-view {
+    -fx-selection-bar: -color-transparent;               
+	-fx-selection-bar-non-focused: -color-transparent;
+}
+
+/* Basis: Grauer Border unten für alle Cells */
+.list-view .list-cell {
+	-fx-border-color: -color-lightgray;
+	-fx-border-width: 0 0 1 0;
+}
+
+/* Selected: Lila Border links */
+.list-view .list-cell:selected {
+	-fx-border-color: -color-lightgray, -primary-purple;
+	-fx-border-width: 0 0 1 0, 0 0 0 15;
+	-fx-border-insets: 0, 0;
+}
+
+/* Playing: Grüner Border links (immer) */
+.list-view .list-cell.playing {
+	-fx-border-color: -color-lightgray, -primary-green;
+	-fx-border-width: 0 0 1 0, 0 0 0 8;
+	-fx-border-insets: 0, 0;
+}
+
+/* Playing + Selected: Grün ganz links, dann Lila daneben */
+.list-view .list-cell.playing:selected {
+	-fx-border-color: -color-lightgray, -primary-purple, -primary-green;
+	-fx-border-width: 0 0 1 0, 0 0 0 15, 0 0 0 8;
+	-fx-border-insets: 0, 0, 0 0 0 20;
+}
+
+/*
+	->   P L A Y   D O T   C H E C K B O X
+*/
+
+/* Hauptcontainer der CheckBox - unsichtbar machen */
+.play-dot-checkbox {
+	-fx-background-color: transparent;
+	-fx-padding: 0;
+	-fx-min-width: 25px;
+	-fx-min-height: 25px;
+	-fx-pref-width: 25px;
+	-fx-pref-height: 25px;
+	-fx-max-width: 25px;
+	-fx-max-height: 25px;
+}
+
+.play-dot-checkbox > .box {
+	-fx-min-width: 25px;
+	-fx-min-height: 25px;
+	-fx-background-color: -color-white;
+	-fx-border-color: -color-black;
+	-fx-border-width: 1px;
+	-fx-border-radius: 50%;
+	-fx-background-radius: 50%;
+	-fx-padding: 0;
+}
+
+/* Hover-Effekt */
+.play-dot-checkbox:hover > .box {
+	-fx-border-color: -primary-green;
+	-fx-border-width: 1px;
+}
+
+/* Gecheckt: gefüllter Kreis in Grün */
+.play-dot-checkbox:selected > .box {
+	-fx-background-color: #00b4a0;
+	-fx-border-color: -color-black;
+	-fx-border-width: 1px;
+}
+
+/* Das Häkchen verstecken */
+.play-dot-checkbox > .box > .mark {
+	-fx-background-color: transparent;
+	/* -fx-shape: ""; */
+	/* -fx-padding: 0; */
+	/* -fx-pref-width: 0;
+	-fx-pref-height: 0; */
+}
+
+/*
+	->   P O P U P   M E S S A G E
+*/
+
+#popup-message {
+	-fx-padding: 6px 10px; 
+	-fx-background-color: -color-black; 
+	-fx-text-fill: -color-white; 
+	-fx-background-radius: 4px;
+}
+
+/*
+	B U T T O N   S W I T C H   V I E W
+*/
+
+
+.btn-play-all {
+	-fx-background-color: -color-transparent;
+	-fx-background-image: url("/icons/play_circle.png");
+	-fx-min-width:32px;
+	-fx-min-height:32px;
+}
+
+.btn-play-all:hover {
+	-fx-background-image: url("/icons/play_circle_hover.png");
+}
+
+.btn-stop-all {
+	-fx-background-color: -color-transparent;
+	-fx-background-image: url("/icons/stop_circle.png");
+	-fx-min-width:32px;
+	-fx-min-height:32px;
+}
+
+.btn-stop-all:hover {
+	-fx-background-image: url("/icons/stop_circle_hover.png");
+}
+
+.btn-select-all {
+	-fx-background-color: -color-transparent;
+	-fx-background-image: url("/icons/select_all.png");
+	-fx-min-width:24px;
+	-fx-min-height:24px;
+	-fx-background-repeat: no-repeat;
+}
+
+.btn-select-all:hover {
+	-fx-background-image: url("/icons/select_all_hover.png");
+}
+
+.btn-deselect-all {
+	-fx-background-color: -color-transparent;
+	-fx-background-image: url("/icons/deselect_all.png");
+	-fx-min-width:24px;
+	-fx-min-height:24px;
+	-fx-background-repeat: no-repeat;
+}
+
+.btn-deselect-all:hover {
+	-fx-background-image: url("/icons/deselect_all_hover.png");
+}
+
+.btn-switch-view-base{
+	-fx-background-size: 32px 32px;
+    -fx-background-repeat: no-repeat;
+    -fx-min-width: 32px;
+    -fx-min-height: 32px;
+	-fx-padding: 13px 35px 0px 0px;
+}
+
+.btn-switch-view{
+	-fx-background-image: url("/icons/change_state_eins.png");
+}
+.btn-switch-view:hover{
+	-fx-background-image: url("/icons/change_state_hover.png");
+}
+.btn-switch-view-checked{
+	-fx-background-image: url("/icons/change_state_zwei.png");
+}
+.btn-switch-view-checked:hover{
+	-fx-background-image: url("/icons/change_state_hover.png");
+}
+
+/*
+	->   O S Z I L L O S K O P   S L I D E R
+*/
+
+.slider-oscilloscope-scale {
+	-fx-control-inner-background: #3f065c;
+	-fx-padding: 10px 5px 10px 5px;
+}
+
+.no-samples-label {	
+	-fx-background-color: -color-dark-gray;
+	-fx-text-fill: -color-white;
+	-fx-background-radius: 5px;
+	-fx-border-color: -color-white;
+	-fx-border-width: 1px;
+	-fx-border-radius: 5px;
+	-fx-font-size: 25px;
+	-fx-padding: 10px;
+}
+
+.list-view-box{
+	-fx-background-color: rgb(20, 20, 30);
+	-fx-border-color: -color-black;
+	-fx-border-width: 1px 0px 0px 0px;
+}

@@ -1,0 +1,202 @@
+/*
+	-> K N O B S  B O X
+*/
+.knobs-box {
+	-fx-background-color: #d0f0c0; 
+	-fx-border-color: black; 
+	-fx-border-width: 1px; 
+	-fx-border-radius: 5px; 
+	-fx-background-radius: 5px;
+}
+/*
+	->   S P L I T   P A N E
+*/
+
+.split-pane:horizontal > .split-pane-divider {
+   -fx-padding: 1;
+   -fx-background-color: rgb(104, 105, 105);
+}
+
+
+/*
+	->   L I S T   V I E W
+*/
+
+.list-view {
+    -fx-selection-bar: #3f065c;               
+	-fx-selection-bar-non-focused: #3f065c;
+}
+ 
+.list-view.list-view:focused {
+	-fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+    -fx-effect: none;
+}
+
+.list-view .list-cell:selected {
+    -fx-background-color: #3f065c; /* oder rgb(26,49,94) */
+    -fx-text-fill: #f0f0e6;
+    -fx-background-insets: 0;
+    -fx-background-radius: 0;
+}
+
+
+/*
+	->   S O N G   D E T A I L S   A N Z E I G E
+*/
+
+.song-details{
+	-fx-background-color: rgb(0,0,0,0.8);
+	-fx-text-fill: white;
+	-fx-background-radius: 5px;
+	-fx-border-color: black;
+	-fx-border-width: 1px;
+	-fx-border-radius: 5px;
+
+}
+
+
+/*
+	->   P O P U P   M E S S A G E
+*/
+
+#popup-message {
+	-fx-padding: 6px 10px; 
+	-fx-background-color: black; 
+	-fx-text-fill: white; 
+	-fx-background-radius: 4px;
+}
+
+
+/*
+	->   B U T T O N S   M I T   B I L D E R N
+*/
+
+.btn-plalist {
+	-fx-background-color: transparent;
+	-fx-border-color: #3f065c;
+	-fx-border-width: 1;
+	-fx-border-radius: 3;
+}
+
+.btn-plalist:hover {
+	-fx-background-color: #3f065c;
+	-fx-text-fill: #f0f0e6;
+}
+
+.icon-button {
+	-fx-min-width: 48;
+	-fx-min-height: 48;
+	-fx-background-color: transparent;
+	-fx-background-repeat: no-repeat no-repeat;
+	-fx-background-size: 44 44;
+	-fx-background-position: center;
+}
+
+.chck-toggle-image-box{
+	-fx-min-width: 32;
+	-fx-min-height: 32;
+	-fx-background-color: transparent;
+	-fx-background-repeat: no-repeat no-repeat;
+	-fx-background-size: 28 28;
+	-fx-background-position: center;
+}
+/*
+	-> switch-root
+*/
+.btn-switch-view{
+	-fx-background-image: url("/icons/playlist_anzeigen.png");
+}
+.btn-switch-view:hover{
+	-fx-background-image: url("/icons/playlist_anzeigen_hover.png");
+}
+.btn-switch-view-checked{
+	-fx-background-image: url("/icons/playlist_anzeigen_checked.png");
+}
+.btn-switch-view-checked:hover{
+	-fx-background-image: url("/icons/playlist_anzeigen_hover.png");
+}
+/*
+	-> autoplay
+ */
+#btn-toggle-autoplay{
+	-fx-background-image: url("/icons/autoplay_unchecked.png");
+}
+#btn-toggle-autoplay:hover{
+	-fx-background-image:url("/icons/autoplay_unchecked_hover.png");
+}
+#btn-toggle-autoplay:selected{
+	-fx-background-image:url("/icons/app_icon.png");
+}
+#btn-toggle-shuffle{
+	-fx-background-image: url("/icons/shuffle_out.png");
+}
+/*
+	-> shuffle
+*/
+#btn-toggle-shuffle:hover{
+	-fx-background-image: url("/icons/shuffle_hover.png");
+}
+#btn-toggle-shuffle:selected{
+	-fx-background-image: url("/icons/shuffle_on.png");
+}
+/*
+	-> mute
+*/
+#btn-toggle-mute{
+	-fx-min-width: 28;
+	-fx-min-height: 28;
+	-fx-background-size: 20 20;
+	-fx-background-image: url("/icons/lautstarke.png");
+}
+#btn-toggle-mute:selected{
+	-fx-background-image: url("/icons/lautstarke_aus.png");
+}
+/*
+	play
+*/
+#btn-play{
+    -fx-background-image: url("/icons/play_circle.png");
+}
+#btn-play:hover {
+	-fx-background-image: url("/icons/play_circle_black.png");
+}
+#btn-play.play {
+	-fx-background-image: url("/icons/play_circle.png");
+}
+#btn-play:hover.play {
+	-fx-background-image: url("/icons/play_circle_black.png");
+}
+#btn-play.pause {
+	-fx-background-image: url("/icons/pause_circle.png");
+}
+#btn-play:hover.pause {
+	-fx-background-image: url("/icons/pause_circle_black.png");
+}
+/*
+	-> preview
+*/
+#btn-prev{
+	-fx-background-image: url("/icons/skip_links_invert.png");
+}
+#btn-prev:hover{
+	-fx-background-image: url("/icons/skip_links_circle.png");
+}
+/*
+	-> next
+*/
+#btn-next{
+	-fx-background-image: url("/icons/skip_rechts_invert.png");
+}
+#btn-next:hover{
+	-fx-background-image: url("/icons/skip_rechts_circle.png");
+}
+/*
+	-> stop
+*/
+#btn-stop{
+	-fx-background-image: url("/icons/stop_circle.png");
+}
+#btn-stop:hover{
+	-fx-background-image: url("/icons/stop_invert_circle.png");
+}
