@@ -1,6 +1,7 @@
 package presentation.views;
 
 import java.util.ArrayList;
+import java.util.Optional;
 
 import business.IServiceHelper;
 import business.AudioSamplePlayer;
@@ -14,6 +15,8 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
@@ -46,8 +49,6 @@ public class SamplesViewController extends BaseController<SamplesView> {
     private final int OVERLAY_DURATION_MS = 600;
     private final String SWITCH_VIEW_NAME = "oscilloscopeView";
 
-    IServiceHelper serviceHelper;
-    GUIHelper guiHelper;
     ObservableList<AudioSamplePlayer> observableRecordings;
     ArrayList<BaseSidebarController> sidebarControllers;
 
@@ -164,28 +165,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
         root().switchView.setTooltip(switchTooltip);
         root().samplesLabel.setText("Samplerate: " + serviceHelper.getMasterOutput().bufferSize());
         
-        root().stopAll.setOnAction(e -> onStopAllPlays());
-        root().playAll.setOnAction(e -> onPlayAll());
-        root().selectAll.setOnAction(e -> onSelectAllSamples());
-        root().deselectAll.setOnAction(e -> onDeselectAllSamples());
-    }
-
-    private void onDeselectAllSamples() {
-        serviceHelper.getSamplePlayers().forEach(e -> e.setLoopSelected(false));
-        guiHelper.setLoopSelection(false);
-    }
-
-    private void onSelectAllSamples() {
-        serviceHelper.getSamplePlayers().forEach(e -> e.setLoopSelected(true));
-        guiHelper.setLoopSelection(true);
-    }
-
-    private void onStopAllPlays() {
-        serviceHelper.stopAllPlays();
-    }
-
-    private void onPlayAll() {
-        serviceHelper.playAll();
+        initializeControlls();
     }
 
     private void onRecord() {
@@ -309,20 +289,75 @@ public class SamplesViewController extends BaseController<SamplesView> {
     }
 
     private void onDelete(){
-        AudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
-        if(selectedRecording != null){
-            guiHelper.setdisableEffects(true);
-            
-            serviceHelper.deleteRecording(selectedRecording);
 
-            observableRecordings.clear();
-            observableRecordings.setAll(serviceHelper.getSamplePlayers());
-            new PopupMessage("Sample gelöscht", root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
-            guiHelper.setdisableEffects(false);
+        boolean deleteAll = false;
+        if(serviceHelper.getSelectedCount() > 1){
+            deleteAll = showFrageDialog();
+            if(deleteAll){
+                guiHelper.setdisableEffects(true);
+                
+                var tempList = serviceHelper.getSamplePlayers().stream()
+                    .filter(AudioSamplePlayer::isLoopSelected).toList();
+
+                tempList.forEach(sample -> serviceHelper.deleteRecording(sample));
+                
+                observableRecordings.clear();
+                observableRecordings.setAll(serviceHelper.getSamplePlayers());
+                new PopupMessage("Alle ausgewählten Samples gelöscht", root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                guiHelper.setdisableEffects(false);
+            }
         }
+
+        if(!deleteAll){
+            AudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
+            if(selectedRecording != null){
+                guiHelper.setdisableEffects(true);
+                serviceHelper.deleteRecording(selectedRecording);
+                
+                observableRecordings.clear();
+                observableRecordings.setAll(serviceHelper.getSamplePlayers());
+                new PopupMessage("Sample gelöscht", root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                guiHelper.setdisableEffects(false);
+            }
+        }
+        
+        if(!serviceHelper.getSamplePlayers().isEmpty())
+            root().listView.getSelectionModel().selectFirst();
+
+        guiHelper.setLoopSelection(false);
     }
 
     private void switchToOscilloscopeView() {
         GUI.switchView(SWITCH_VIEW_NAME);
+    }
+
+    private boolean showFrageDialog(){
+        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
+                dialog.setTitle("Löschen");
+                dialog.setHeaderText("Alle oder Eins?");
+                dialog.setContentText("Willst du alle ausgewählten Samples oder nur das aktuell aktive Sample (lila Balken links) löschen?");
+                
+                ButtonType btnDeleteAll = new ButtonType("Alle löschen");
+                ButtonType btnDeleteCurrent = new ButtonType("Aktuelles löschen");
+                
+                dialog.getButtonTypes().setAll(btnDeleteAll, btnDeleteCurrent);
+                
+                dialog.getDialogPane().setMinWidth(280);
+                dialog.getDialogPane().setMinHeight(170);
+                
+                Image icon = new Image(
+                    getClass().getResourceAsStream("/icons/app_icon.png")
+                );
+                Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
+                stage.getIcons().add(icon);
+                
+                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
+                dialog.getDialogPane().getStyleClass().add("custom-dialog");
+                dialog.getDialogPane().getStyleClass().add("custom-frage");
+                
+                Optional<ButtonType> result = dialog.showAndWait();
+                
+                return result.isPresent() && result.get() == btnDeleteAll;
+
     }
 }

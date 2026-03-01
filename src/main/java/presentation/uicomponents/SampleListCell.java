@@ -66,19 +66,19 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         chckBxSelectedPlay.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             if (currentItem != null) {
                 if(isNowSelected){
-                    new PopupMessage("hinzugefügt", chckBxSelectedPlay, -32, 0, 600);
+                    // new PopupMessage("hinzugefügt", chckBxSelectedPlay, -32, 0, 600);
                     currentItem.setLoopSelected(isNowSelected);
                 }
                 else{
-                    new PopupMessage("entfernt", chckBxSelectedPlay, -20, 0, 600);
+                    // new PopupMessage("entfernt", chckBxSelectedPlay, -20, 0, 600);
                     currentItem.setLoopSelected(isNowSelected);
                 }
             }
         });
 
         guiHelper.loopSelectionProperty().addListener((obs, wasSelected, isNowSelected) -> {
-            if (currentItem != null) {
-                chckBxSelectedPlay.setSelected(currentItem.isLoopSelected());
+            if(currentItem != null){
+                chckBxSelectedPlay.setSelected(guiHelper.isLoopSelection());
             }
         });
         

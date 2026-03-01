@@ -40,26 +40,34 @@ public abstract class BaseView extends GridPane {
         
         stopAll = new Button();
         stopAll.getStyleClass().add("btn-stop-all");
-        stopAll.setTooltip(new Tooltip("Alle Samples stoppen"));
+        Tooltip stopAllTooltip = new Tooltip("Alle Samples stoppen");
+        stopAllTooltip.setFont(new Font(13));
+        stopAll.setTooltip(stopAllTooltip);
         
         playAll = new Button();
         playAll.getStyleClass().add("btn-play-all");
-        playAll.setTooltip(new Tooltip("Alle ausgewählten Samples abspielen"));
+        Tooltip playAllTooltip = new Tooltip("Alle ausgewählten Samples abspielen");
+        playAllTooltip.setFont(new Font(13));
+        playAll.setTooltip(playAllTooltip);
 
         selectAll = new Button();
         selectAll.getStyleClass().add("btn-select-all");
-        selectAll.setTooltip(new Tooltip("Alle Samples auswählen"));
+        Tooltip selectAllTooltip = new Tooltip("Alle Samples auswählen");
+        selectAllTooltip.setFont(new Font(13));
+        selectAll.setTooltip(selectAllTooltip);
         HBox selectAllContainer = new HBox(selectAll);
         selectAllContainer.setPadding(new Insets(28,5,0,0));
 
         deselectAll = new Button();
         deselectAll.getStyleClass().add("btn-deselect-all");
-        deselectAll.setTooltip(new Tooltip("Alle Samples abwählen"));
+        Tooltip deselectTooltip = new Tooltip("Alle Samples abwählen");
+        deselectTooltip.setFont(new Font(13));
+        deselectAll.setTooltip(deselectTooltip);
         HBox deselectAllContainer = new HBox(deselectAll);
         deselectAllContainer.setPadding(new Insets(28,0,0,8));
 
         buttonContainer.setAlignment(Pos.CENTER);
-        buttonContainer.setPadding(new Insets(5, 160, 5, 10));
+        buttonContainer.setPadding(new Insets(5, 138, 5, 10));
         buttonContainer.getChildren().addAll(selectAllContainer, playAll, stopAll, deselectAllContainer);
         HBox.setHgrow(buttonContainer, Priority.ALWAYS);
 

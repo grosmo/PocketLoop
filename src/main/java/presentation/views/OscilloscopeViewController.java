@@ -9,6 +9,7 @@ import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import presentation.GUI;
+import presentation.GUIHelper;
 
 public class OscilloscopeViewController extends BaseController<OscilloscopeView> {
 
@@ -20,11 +21,12 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
     private boolean timerRunning = false;
     private float scaleFactor;
 
-    IServiceHelper serviceHelper;
+    // IServiceHelper serviceHelper;
 
-    public OscilloscopeViewController(IServiceHelper serviceHelper) {
+    public OscilloscopeViewController(IServiceHelper serviceHelper, GUIHelper guiHelper) {
         setRoot(new OscilloscopeView());
         this.serviceHelper = serviceHelper;
+        this.guiHelper = guiHelper;
         this.masterOutput = serviceHelper.getMasterOutput();
         scaleFactor = (float) root().scaleSlider.getValue();
         initialize();
@@ -60,26 +62,8 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
         switchTooltip.setFont(tooltipFont);
         root().switchView.setTooltip(switchTooltip);
         root().samplesLabel.setText("Samplerate: " + masterOutput.bufferSize());
-        root().stopAll.setOnAction(e -> onStopAllPlays());
-        root().playAll.setOnAction(e -> onPlayAll());
-        root().selectAll.setOnAction(e -> onSelectAllSamples());
-        root().deselectAll.setOnAction(e -> onDeselectAllSamples());
-    }
 
-    private void onDeselectAllSamples() {
-        serviceHelper.getSamplePlayers().forEach(e -> e.setLoopSelected(false));
-    }
-
-    private void onSelectAllSamples() {
-        serviceHelper.getSamplePlayers().forEach(e -> e.setLoopSelected(true));
-    }
-
-    private void onStopAllPlays() {
-        serviceHelper.stopAllPlays();
-    }
-
-    private void onPlayAll() {
-        serviceHelper.playAll();
+        initializeControlls();
     }
     
     private void startOscilloscope() {

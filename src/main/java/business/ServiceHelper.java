@@ -116,6 +116,13 @@ public class ServiceHelper implements IServiceHelper {
     }
 
     @Override
+    public int getSelectedCount(){
+        int count = 0;
+        count = (int) samplePlayers.stream().filter(f -> f.isLoopSelected()).count();
+        return count;
+    }
+
+    @Override
     public void stopAllPlays() {
         samplePlayers.forEach(sample -> sample.setPlaying(false));
     }
@@ -417,5 +424,4 @@ public class ServiceHelper implements IServiceHelper {
             sample.applyEffect(effectType, enabled);
         }
     }
-
 }

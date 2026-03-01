@@ -7,8 +7,8 @@ import presentation.GUIHelper;
 public class DelaySidebarController extends BaseSidebarController<DelaySidebar> {
 
     public DelaySidebarController(IServiceHelper serviceHelper, GUIHelper guiHelper){ 
-        this.serviceHelper = serviceHelper;
-        this.guiHelper = guiHelper;
+        setServiceHelper(serviceHelper);
+        setGuiHelper(guiHelper);
         setRoot(new DelaySidebar());
         root().toggleEffect.setDisable(true);
         initialize();
@@ -20,39 +20,39 @@ public class DelaySidebarController extends BaseSidebarController<DelaySidebar> 
         initializeConditionsListener();
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if(serviceHelper.getAktuellesSample() != null){
-                serviceHelper.setDelayEnabled(newValue);
-                serviceHelper.applyEffect(EffectType.DELAY, newValue);
+            if(getServiceHelper().getAktuellesSample() != null){
+                getServiceHelper().setDelayEnabled(newValue);
+                getServiceHelper().applyEffect(EffectType.DELAY, newValue);
                 animateContentBox(root().contentBox, newValue);
             }
         });
 
-        serviceHelper.aktuellesSampleProperty().addListener((observable, oldValue, newValue) -> {
+        getServiceHelper().aktuellesSampleProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 root().toggleEffect.setDisable(false);
                 setConditionsListener();
-                root().toggleEffect.setSelected(serviceHelper.isDelayEnabled());
-                root().knobDelayTime.setValue(serviceHelper.getDelayTime() * 1000.0f);
-                root().knobFeedback.setValue(serviceHelper.getDelayFeedback());
+                root().toggleEffect.setSelected(getServiceHelper().isDelayEnabled());
+                root().knobDelayTime.setValue(getServiceHelper().getDelayTime() * 1000.0f);
+                root().knobFeedback.setValue(getServiceHelper().getDelayFeedback());
             }
         });
 
         root().knobDelayTime.valueProperty().addListener((observable, oldValue, newValue) -> {
             float delayTimeInSeconds = newValue.floatValue() / 1000.0f;
-            if(serviceHelper.getAktuellesSample() != null)
-                serviceHelper.setDelayTime(delayTimeInSeconds);
+            if(getServiceHelper().getAktuellesSample() != null)
+                getServiceHelper().setDelayTime(delayTimeInSeconds);
         });
 
         root().knobFeedback.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if(serviceHelper.getAktuellesSample() != null)
-                serviceHelper.setDelayFeedback(newValue.floatValue());
+            if(getServiceHelper().getAktuellesSample() != null)
+                getServiceHelper().setDelayFeedback(newValue.floatValue());
         });
     }
 
     @Override
     public void bindToRecordingModel(){
-        root().toggleEffect.setSelected(serviceHelper.isDelayEnabled());
-        root().knobDelayTime.setValue(serviceHelper.getDelayTime() * 1000.0f);
-        root().knobFeedback.setValue(serviceHelper.getDelayFeedback());
+        root().toggleEffect.setSelected(getServiceHelper().isDelayEnabled());
+        root().knobDelayTime.setValue(getServiceHelper().getDelayTime() * 1000.0f);
+        root().knobFeedback.setValue(getServiceHelper().getDelayFeedback());
     }
 }

@@ -51,7 +51,7 @@ public class GUI extends Application {
 		BaseController SamplesViewController = new SamplesViewController(serviceHelper, guiHelper);
 		Pane SamplesView = SamplesViewController.root();
 
-		BaseController oscilloscopeViewController = new OscilloscopeViewController(serviceHelper);
+		BaseController oscilloscopeViewController = new OscilloscopeViewController(serviceHelper, guiHelper);
 		Pane oscilloscopeView = oscilloscopeViewController.root();
 
 		views.put("SamplesView", SamplesView);

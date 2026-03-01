@@ -8,8 +8,8 @@ import presentation.GUIHelper;
 public class ReverseSidebarController extends BaseSidebarController<ReverseSidebar> {
 
     public ReverseSidebarController(IServiceHelper serviceHelper, GUIHelper guiHelper){ 
-        this.serviceHelper = serviceHelper;
-        this.guiHelper = guiHelper;
+        setServiceHelper(serviceHelper);
+        setGuiHelper(guiHelper);
         setRoot(new ReverseSidebar());
         root().toggleEffect.setDisable(true);
         initialize();
@@ -21,40 +21,40 @@ public class ReverseSidebarController extends BaseSidebarController<ReverseSideb
         setSaveButtonEvent(EffectType.REVERSE);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
-            if(serviceHelper.getAktuellesSample() != null) {
+            if(getServiceHelper().getAktuellesSample() != null) {
                 if(newValue) {
-                    serviceHelper.setDelayEnabled(false);
-                    serviceHelper.setFlangerEnabled(false);
+                    getServiceHelper().setDelayEnabled(false);
+                    getServiceHelper().setFlangerEnabled(false);
                 }
-                serviceHelper.setReverseEnabled(newValue);
+                getServiceHelper().setReverseEnabled(newValue);
                 animateContentBox(root().contentBox, newValue);
             }
         });
 
-        serviceHelper.aktuellesSampleProperty().addListener((observable, oldValue, newValue) -> {
+        getServiceHelper().aktuellesSampleProperty().addListener((observable, oldValue, newValue) -> {
             if(newValue != null){
                 root().toggleEffect.setDisable(false);
-                root().toggleEffect.setSelected(serviceHelper.isReverseEnabled());
+                root().toggleEffect.setSelected(getServiceHelper().isReverseEnabled());
 
-                BooleanProperty pitchProp = serviceHelper.pitchShiftEnabledProperty();
+                BooleanProperty pitchProp = getServiceHelper().pitchShiftEnabledProperty();
                 if(pitchProp != null) {
                     pitchProp.removeListener(disablePitchListener);
                     pitchProp.addListener(disablePitchListener);
                 }
                 
-                BooleanProperty bitcrushProp = serviceHelper.bitcrusherEnabledProperty();
+                BooleanProperty bitcrushProp = getServiceHelper().bitcrusherEnabledProperty();
                 if(bitcrushProp != null) {
                     bitcrushProp.removeListener(disableBitcrushListener);
                     bitcrushProp.addListener(disableBitcrushListener);
                 }
 
-                BooleanProperty delayProp = serviceHelper.delayEnabledProperty();
+                BooleanProperty delayProp = getServiceHelper().delayEnabledProperty();
                 if(delayProp != null) {
                     delayProp.removeListener(disableDelayListener);
                     delayProp.addListener(disableDelayListener);
                 }
 
-                BooleanProperty flangerProp = serviceHelper.flangerEnabledProperty();;
+                BooleanProperty flangerProp = getServiceHelper().flangerEnabledProperty();
                 if(flangerProp != null) {
                     flangerProp.removeListener(disableFlangerListener);
                     flangerProp.addListener(disableFlangerListener);
@@ -65,6 +65,6 @@ public class ReverseSidebarController extends BaseSidebarController<ReverseSideb
 
     @Override
     public void bindToRecordingModel(){
-        root().toggleEffect.setSelected(serviceHelper.isReverseEnabled());
+        root().toggleEffect.setSelected(getServiceHelper().isReverseEnabled());
     }
 }

@@ -2,7 +2,6 @@ package presentation.uicomponents.effektesidebars;
 
 import java.util.List;
 
-import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import javafx.animation.FadeTransition;
 import javafx.beans.property.BooleanProperty;
@@ -16,10 +15,10 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import java.util.Optional;
-import presentation.GUIHelper;
 import presentation.uicomponents.PopupMessage;
 import presentation.views.BaseController;
 
+// public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseController<T>
 public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseController<T> {
 
     private final String NO_RECORDING_SELECTED_TITLE = "Keine Aufnahme ausgewählt";
@@ -32,9 +31,6 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
 
     private final int OVERLAY_DURATION_MS = 600;
 
-    IServiceHelper serviceHelper;
-    GUIHelper guiHelper;
-
     ChangeListener<Object> disableReverseListener;
     ChangeListener<Object> disablePitchListener;
     ChangeListener<Object> disableBitcrushListener;
@@ -42,7 +38,6 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
     ChangeListener<Object> disableFlangerListener;
 
     ChangeListener<Object> disableAllEffectsListener;
-    // ChangeListener<Object> disableAllEffectListener;
 
     ChangeListener<Boolean> checkConditionsListener;
     EventHandler<MouseEvent> restrictedEffectFilter;
@@ -108,37 +103,37 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
         };
 
         disableReverseListener = (observ, oldVal, newVal) -> {
-            if((Boolean)newVal && serviceHelper.getAktuellesSample() != null) {
+            if((Boolean)newVal && getServiceHelper().getAktuellesSample() != null) {
                 root().toggleEffect.setSelected(false);
             }
         };
 
         disablePitchListener = (observ, oldVal, newVal) -> {
-            if((Boolean)newVal && serviceHelper.getAktuellesSample() != null) {
+            if((Boolean)newVal && getServiceHelper().getAktuellesSample() != null) {
                 root().toggleEffect.setSelected(false);
             }
         };
 
         disableBitcrushListener = (observ, oldVal, newVal) -> {
-            if((Boolean)newVal && serviceHelper.getAktuellesSample() != null) {
+            if((Boolean)newVal && getServiceHelper().getAktuellesSample() != null) {
                 root().toggleEffect.setSelected(false);
             }
         };
 
         disableDelayListener = (observ, oldVal, newVal) -> {
-            if((Boolean)newVal && serviceHelper.getAktuellesSample() != null) {
+            if((Boolean)newVal && getServiceHelper().getAktuellesSample() != null) {
                 root().toggleEffect.setSelected(false);
             }
         };
 
         disableFlangerListener = (observ, oldVal, newVal) -> {
-            if((Boolean)newVal && serviceHelper.getAktuellesSample() != null) {
+            if((Boolean)newVal && getServiceHelper().getAktuellesSample() != null) {
                 root().toggleEffect.setSelected(false);
             }
         };
 
-        guiHelper.disableEffectsProperty().removeListener(disableAllEffectsListener);
-        guiHelper.disableEffectsProperty().addListener(disableAllEffectsListener);
+        getGuiHelper().disableEffectsProperty().removeListener(disableAllEffectsListener);
+        getGuiHelper().disableEffectsProperty().addListener(disableAllEffectsListener);
 
         if (root().toggleBox != null){
 
@@ -152,7 +147,7 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
             
             // einen initialen Filter setzen
             root().toggleBox.setOnMouseClicked(noSelectionFilter);
-            guiHelper.noSamplesInListProperty().addListener((obj, oldVal, newVal) -> {
+            getGuiHelper().noSamplesInListProperty().addListener((obj, oldVal, newVal) -> {
                 if(newVal){
                     root().toggleEffect.addEventFilter(MouseEvent.MOUSE_CLICKED, noSelectionFilter);
                 }
@@ -168,9 +163,9 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
     protected void initializeConditionsListener(){
 
         checkConditionsListener = (obs, oldVal, newVal) -> {
-            isEnableConditionRestricted = serviceHelper.isPitchShiftEnabled() || 
-            serviceHelper.isReverseEnabled() || 
-            serviceHelper.isBitcrusherEnabled();
+            isEnableConditionRestricted = getServiceHelper().isPitchShiftEnabled() || 
+            getServiceHelper().isReverseEnabled() || 
+            getServiceHelper().isBitcrusherEnabled();
         };
         
         restrictedEffectFilter = event -> {
@@ -186,9 +181,9 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
 
     protected void setConditionsListener(){
         List<BooleanProperty> propertiesToList = List.of(
-            serviceHelper.pitchShiftEnabledProperty(),
-            serviceHelper.reverseEnabledProperty(),
-            serviceHelper.bitcrusherEnabledProperty()
+            getServiceHelper().pitchShiftEnabledProperty(),
+            getServiceHelper().reverseEnabledProperty(),
+            getServiceHelper().bitcrusherEnabledProperty()
         );
 
         if(checkConditionsListener != null) {
@@ -210,8 +205,8 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
 
     protected void setSaveButtonEvent(EffectType effectType){
         root().btnSave.setOnAction(event -> {
-            if(serviceHelper.getAktuellesSample() != null) {
-                serviceHelper.stopAllPlays();
+            if(getServiceHelper().getAktuellesSample() != null) {
+                getServiceHelper().stopAllPlays();
 
                 Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
                 dialog.setTitle("Behalten");
@@ -240,13 +235,13 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
                 
                 boolean keepOriginal = result.isPresent() && result.get() == btnBehalten;
 
-                serviceHelper.applyEffect(effectType, keepOriginal);
+                getServiceHelper().applyEffect(effectType, keepOriginal);
                 
-                boolean supressUpdate = guiHelper.isUpdateSamplesList();
-                guiHelper.setUpdateSamplesList(!supressUpdate);
-                serviceHelper.setBitcrusherEnabled(false);
-                serviceHelper.setPitchShiftEnabled(false);
-                serviceHelper.setReverseEnabled(false);
+                boolean forceUpdate = getGuiHelper().isUpdateSamplesList();
+                getGuiHelper().setUpdateSamplesList(!forceUpdate);
+                getServiceHelper().setBitcrusherEnabled(false);
+                getServiceHelper().setPitchShiftEnabled(false);
+                getServiceHelper().setReverseEnabled(false);
                 root().toggleEffect.setSelected(false);
                 new PopupMessage(EFFEKT_GESPEICHERT_MESSAGE, root(), 0, 0, OVERLAY_DURATION_MS, true);
             }

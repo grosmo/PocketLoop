@@ -40,6 +40,8 @@ public interface IServiceHelper {
 
     void deleteRecording(AudioSamplePlayer selectedSample);
 
+    int getSelectedCount();
+
     void playAll();
 
     void stopAllPlays();

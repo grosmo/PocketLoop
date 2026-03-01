@@ -79,7 +79,7 @@ public class SoundBuilderService {
         boolean success = applyArrayEffects(effectsToApply, effectHelper, sampleModel, serviceHelper, enable);
 
         if(!success){
-            System.out.println("DEBUG: applyEffects failed!");
+            System.out.println("FEHLER beim Anwenden des Effekts auf das Sample!");
         }
     }
 
@@ -96,7 +96,7 @@ public class SoundBuilderService {
             float[] rightChannelData = channels > 1 ? sample.getChannel(AudioSample.RIGHT) : null;
             
             if(leftChannelData == null) {
-                System.out.println("DEBUG: Failed to load audio channels!");
+                System.out.println("FEHLER beim Laden der Audiokanäle!");
                 return false;
             }
 
