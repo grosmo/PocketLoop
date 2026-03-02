@@ -12,6 +12,9 @@ build/
 *.ear
 hs_err_pid*
 
+# Generated audio recordings
+recordings/
+
 # OS
 .DS_Store
 Thumbs.db
