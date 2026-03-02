@@ -7,28 +7,14 @@ import javafx.animation.FadeTransition;
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.value.ChangeListener;
 import javafx.event.EventHandler;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.util.Optional;
+import presentation.TextHelper;
 import presentation.uicomponents.PopupMessage;
 import presentation.views.BaseController;
 
-// public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseController<T>
 public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseController<T> {
-
-    private final String NO_RECORDING_SELECTED_TITLE = "Keine Aufnahme ausgewählt";
-    private final String NO_RECORDING_SELECTED_MESSAGE = "Bitte mache erst eine Aufnahme und/oder wähle eine aus um einen Effekt benutzen zu können.";
-
-    private final String RESTRICTED_EFFECT_TITLE = "Effekt kann nicht angehängt werden";
-    private final String RESTRICTED_EFFECT_MESSAGE = "Live Effekte können nur verwendet werden, wenn keine Arrayeffekte aktiviert sind.";
-
-    private final String EFFEKT_GESPEICHERT_MESSAGE = "Effekt wurde auf das Sample angewendet.";
-
     private final int OVERLAY_DURATION_MS = 600;
 
     ChangeListener<Object> disableReverseListener;
@@ -76,24 +62,6 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
         }
     }
 
-    protected void showNoConditionRestrictedInfo(String titel, String message) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle(titel);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-
-        Image icon = new Image(
-            getClass().getResourceAsStream("/icons/app_icon.png")
-        );
-
-        Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
-        stage.getIcons().add(icon);
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-        alert.getDialogPane().getStyleClass().add("custom-dialog");
-        alert.getDialogPane().getStyleClass().add("custom-alert");
-        alert.showAndWait();
-    }
-
     protected void setBasicEvents(){
 
         disableAllEffectsListener = (obs, oldVal, newVal) -> {
@@ -138,9 +106,9 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
         if (root().toggleBox != null){
 
             noSelectionFilter = event -> {
-                showNoConditionRestrictedInfo(
-                    NO_RECORDING_SELECTED_TITLE, 
-                    NO_RECORDING_SELECTED_MESSAGE
+                getGuiHelper().getDialogueManager().showInfoDialogue(
+                    TextHelper.NO_RECORDING_SELECTED_TITLE, 
+                    TextHelper.NO_RECORDING_SELECTED_MESSAGE
                 );
                 event.consume();
             };
@@ -171,9 +139,9 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
         restrictedEffectFilter = event -> {
             if(isEnableConditionRestricted) {
                 event.consume();
-                showNoConditionRestrictedInfo(
-                    RESTRICTED_EFFECT_TITLE, 
-                    RESTRICTED_EFFECT_MESSAGE
+                getGuiHelper().getDialogueManager().showInfoDialogue(
+                    TextHelper.RESTRICTED_EFFECT_TITLE, 
+                    TextHelper.RESTRICTED_EFFECT_MESSAGE
                 );
             }
         };
@@ -207,43 +175,22 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
         root().btnSave.setOnAction(event -> {
             if(getServiceHelper().getAktuellesSample() != null) {
                 getServiceHelper().stopAllPlays();
-
-                Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-                dialog.setTitle("Behalten");
-                dialog.setHeaderText("Behalten oder Überschreiben?");
-                dialog.setContentText("Willst du die ursprüngliche Aufnahme behalten oder überschreiben?");
-                
-                ButtonType btnBehalten = new ButtonType("Behalten");
-                ButtonType btnUeberschreiben = new ButtonType("Überschreiben");
-                
-                dialog.getButtonTypes().setAll(btnBehalten, btnUeberschreiben);
-                
-                dialog.getDialogPane().setMinWidth(280);
-                dialog.getDialogPane().setMinHeight(170);
-                
-                Image icon = new Image(
-                    getClass().getResourceAsStream("/icons/app_icon.png")
+                boolean keepOriginal = getGuiHelper().getDialogueManager().showConfirmationDialogue(
+                    TextHelper.NEW_ARRAYEFFECT_SAVE_TITLE, 
+                    TextHelper.NEW_ARRAYEFFECT_SAVE_HEADER, 
+                    TextHelper.NEW_ARRAYEFFECT_SAVE_MESSAGE, 
+                    TextHelper.NEW_ARRAYEFFECT_SAVE_CONFIRM, 
+                    TextHelper.NEW_ARRAYEFFECT_SAVE_DENY
                 );
-                Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(icon);
-                
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-                dialog.getDialogPane().getStyleClass().add("custom-dialog");
-                dialog.getDialogPane().getStyleClass().add("custom-frage");
-                
-                Optional<ButtonType> result = dialog.showAndWait();
-                
-                boolean keepOriginal = result.isPresent() && result.get() == btnBehalten;
 
                 getServiceHelper().applyEffect(effectType, keepOriginal);
-                
                 boolean forceUpdate = getGuiHelper().isUpdateSamplesList();
                 getGuiHelper().setUpdateSamplesList(!forceUpdate);
                 getServiceHelper().setBitcrusherEnabled(false);
                 getServiceHelper().setPitchShiftEnabled(false);
                 getServiceHelper().setReverseEnabled(false);
                 root().toggleEffect.setSelected(false);
-                new PopupMessage(EFFEKT_GESPEICHERT_MESSAGE, root(), 0, 0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(TextHelper.EFFEKT_GESPEICHERT_MESSAGE, root(), 0, 0, OVERLAY_DURATION_MS, true);
             }
         });
     }

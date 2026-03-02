@@ -15,6 +15,7 @@ import javafx.scene.text.Font;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 import presentation.uicomponents.uicontrols.RotaryKnob;
 
 public class SampleListCell extends ListCell<AudioSamplePlayer> {
@@ -52,27 +53,23 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         imageView.setPreserveRatio(true);
         chckBxPlay.setGraphic(imageView);
 
-        Tooltip tooltip = new Tooltip("Play/Stop");
-        tooltip.setFont(new Font(13));
+        Tooltip tooltip = new Tooltip(TextHelper.TOOLTIP_LISTCELL_PLAY);
+        tooltip.setFont(TextHelper.FONT_TOOLTIP);
         chckBxPlay.setTooltip(tooltip);
 
         chckBxSelectedPlay = new CheckBox();
         chckBxSelectedPlay.getStyleClass().add("play-dot-checkbox");
 
-        Tooltip selectedPlayTooltip = new Tooltip("Zum Loop hinzufügen");
-        selectedPlayTooltip.setFont(new Font(13));
+        Tooltip selectedPlayTooltip = new Tooltip(TextHelper.TOOLTIP_LISTCELL_SELECT);
+        selectedPlayTooltip.setFont(TextHelper.FONT_TOOLTIP);
         chckBxSelectedPlay.setTooltip(selectedPlayTooltip);
 
         chckBxSelectedPlay.selectedProperty().addListener((obs, wasSelected, isNowSelected) -> {
             if (currentItem != null) {
-                if(isNowSelected){
-                    // new PopupMessage("hinzugefügt", chckBxSelectedPlay, -32, 0, 600);
+                if(isNowSelected)
                     currentItem.setLoopSelected(isNowSelected);
-                }
-                else{
-                    // new PopupMessage("entfernt", chckBxSelectedPlay, -20, 0, 600);
+                else
                     currentItem.setLoopSelected(isNowSelected);
-                }
             }
         });
 
@@ -99,7 +96,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         volumeBox.setMinWidth(60);
         volumeBox.setPrefWidth(60);
         volumeBox.setMaxWidth(60);
-        Tooltip volumeTooltip = new Tooltip("Lautstärke");
+        Tooltip volumeTooltip = new Tooltip(TextHelper.TOOLTIP_LISTCELL_VOLUME);
         volumeTooltip.setFont(new Font(13));
         Tooltip.install(volumeKnob, volumeTooltip);
         

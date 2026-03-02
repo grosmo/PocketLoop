@@ -10,25 +10,22 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Font;
+import presentation.TextHelper;
 
 public class OscilloscopeView extends BaseView {
 
     Canvas oscilloscope;
     Slider scaleSlider;
-    Label scaleLabel;
-    Label samplesLabel;
+    Label scaleLabel;    
     
     public OscilloscopeView() {
 
         oscilloscope = new Canvas(800, 400);
         oscilloscope.getStyleClass().add("oscilloscope-canvas");
-        HBox switchViewContainer = createSwitchView();
+        HBox switchViewContainer = createTopBar();
         switchView.getStyleClass().add("btn-switch-view-base");
         switchView.getStyleClass().add("btn-switch-view-checked");
-        viewLabel.setText("Oszilloskop");
-        
-        samplesLabel = new Label();
-        labelBox.getChildren().add(samplesLabel);
+        viewLabel.setText(TextHelper.OSZILLOSKOP);
         
         scaleLabel = new Label();
         scaleLabel.setFont(new Font(15));

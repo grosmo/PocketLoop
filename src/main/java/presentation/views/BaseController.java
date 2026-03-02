@@ -3,6 +3,7 @@ package presentation.views;
 import business.IServiceHelper;
 import javafx.scene.layout.Pane;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public abstract class BaseController <T extends Pane>{
     private T root;
@@ -35,13 +36,15 @@ public abstract class BaseController <T extends Pane>{
     public void initializeControlls(){
         BaseView baseView = (BaseView) root;
         if(baseView != null){
+            if(baseView.sampleRateLabel != null)
+                baseView.sampleRateLabel.setText(TextHelper.SAMPLE_RATE + serviceHelper.getMasterOutput().bufferSize());
             baseView.stopAll.setOnAction(e -> onStopAllPlays());      
             baseView.playAll.setOnAction(e -> onPlayAll());
             baseView.selectAll.setOnAction(e -> onSelectAllSamples());
             baseView.deselectAll.setOnAction(e -> onDeselectAllSamples());
         }
         else {
-            System.err.println("Root is not an instance of BaseView. Controlls not initialized.");
+            System.err.println("root() konnte nicht gecasted werden!");
         }
     }
 

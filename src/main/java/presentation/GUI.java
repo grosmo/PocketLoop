@@ -54,19 +54,17 @@ public class GUI extends Application {
 		BaseController oscilloscopeViewController = new OscilloscopeViewController(serviceHelper, guiHelper);
 		Pane oscilloscopeView = oscilloscopeViewController.root();
 
-		views.put("SamplesView", SamplesView);
-		views.put("oscilloscopeView", oscilloscopeView);
+		views.put(TextHelper.SWITCH_VIEW_NAME_SAMPLE, SamplesView);
+		views.put(TextHelper.SWITCH_VIEW_NAME_OSZILLOSKOPE, oscilloscopeView);
 		
 		mainRoot = new BorderPane();
-		mainRoot.setCenter(views.get("SamplesView"));
+		mainRoot.setCenter(views.get(TextHelper.SWITCH_VIEW_NAME_SAMPLE));
 		Scene scene = new Scene(mainRoot);
 
 		scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+		primaryStage.getIcons().add(guiHelper.getIcon());
 		
-		Image icon = new Image(getClass().getResourceAsStream("/icons/app_icon.png"));
-		primaryStage.getIcons().add(icon);
-		
-		primaryStage.setTitle("Pocket Loop");
+		primaryStage.setTitle(TextHelper.APP_TITLE);
 		primaryStage.setScene(scene);
 		primaryStage.setMinWidth(950);
 		primaryStage.setMinHeight(800);

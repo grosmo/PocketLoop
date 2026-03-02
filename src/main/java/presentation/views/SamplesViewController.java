@@ -1,8 +1,6 @@
 package presentation.views;
 
 import java.util.ArrayList;
-import java.util.Optional;
-
 import business.IServiceHelper;
 import business.AudioSamplePlayer;
 import javafx.application.Platform;
@@ -15,17 +13,12 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.Tooltip;
-import javafx.scene.image.Image;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -44,21 +37,17 @@ import presentation.uicomponents.effektesidebars.DescriptionLiveEffektController
 import presentation.uicomponents.effektesidebars.DescriptionArrayEffektController;
 import presentation.GUI;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class SamplesViewController extends BaseController<SamplesView> {
     private final int OVERLAY_DURATION_MS = 600;
-    private final String SWITCH_VIEW_NAME = "oscilloscopeView";
 
     ObservableList<AudioSamplePlayer> observableRecordings;
     ArrayList<BaseSidebarController> sidebarControllers;
 
-    private final Font tooltipFont = new Font(13);
-
-
     public SamplesViewController(IServiceHelper serviceHelper, GUIHelper guiHelper){
         this.serviceHelper = serviceHelper;
         this.guiHelper = guiHelper;
-
         this.sidebarControllers = new ArrayList<>();
         sidebarControllers.add(new DescriptionLiveEffektController());
         sidebarControllers.add(new DelaySidebarController(serviceHelper, guiHelper));
@@ -67,11 +56,8 @@ public class SamplesViewController extends BaseController<SamplesView> {
         sidebarControllers.add(new ReverseSidebarController(serviceHelper, guiHelper));
         sidebarControllers.add(new PitchShiftSidebarController(serviceHelper, guiHelper));
         sidebarControllers.add(new BitcrusherSidebarController(serviceHelper, guiHelper));
-
         this.observableRecordings = FXCollections.observableArrayList(serviceHelper.getSamplePlayers());
-        
         setRoot(new SamplesView(observableRecordings, sidebarControllers));
-
         initialize();
     }
 
@@ -86,18 +72,18 @@ public class SamplesViewController extends BaseController<SamplesView> {
             switchToOscilloscopeView();
         });
 
-        Tooltip recordTooltip = new Tooltip("Neue Aufnahme starten");
-        recordTooltip.setFont(tooltipFont);
+        Tooltip recordTooltip = new Tooltip(TextHelper.TOOLTIP_START_RECORDING_TEXT);
+        recordTooltip.setFont(TextHelper.FONT_TOOLTIP);
         root().btnRecord.setTooltip(recordTooltip);
         root().btnRecord.setOnAction(e -> onRecord());
 
-        Tooltip renameTooltip = new Tooltip("Aufnahme umbenennen");
-        renameTooltip.setFont(tooltipFont);
+        Tooltip renameTooltip = new Tooltip(TextHelper.TOOLTIP_RENAME_RECORDING_TEXT);
+        renameTooltip.setFont(TextHelper.FONT_TOOLTIP);
         root().btnRename.setTooltip(renameTooltip);
         root().btnRename.setOnAction(e -> onRename());
 
-        Tooltip deleteTooltip = new Tooltip("Aufnahme Löschen");
-        deleteTooltip.setFont(tooltipFont);
+        Tooltip deleteTooltip = new Tooltip(TextHelper.TOOLTIP_DELETE_RECORDING_TEXT);
+        deleteTooltip.setFont(TextHelper.FONT_TOOLTIP);
         root().btnDelete.setTooltip(deleteTooltip);
         root().btnDelete.setOnAction(e -> onDelete());
 
@@ -160,10 +146,9 @@ public class SamplesViewController extends BaseController<SamplesView> {
             });
         });
 
-        Tooltip switchTooltip = new Tooltip("Ansicht Wechseln");
-        switchTooltip.setFont(tooltipFont);
+        Tooltip switchTooltip = new Tooltip(TextHelper.TOOLTIP_SWITCH_VIEW_TEXT);
+        switchTooltip.setFont(TextHelper.FONT_TOOLTIP);
         root().switchView.setTooltip(switchTooltip);
-        root().samplesLabel.setText("Samplerate: " + serviceHelper.getMasterOutput().bufferSize());
         
         initializeControlls();
     }
@@ -173,27 +158,26 @@ public class SamplesViewController extends BaseController<SamplesView> {
         Platform.runLater(() -> {
             Stage recordingStage = new Stage();
             recordingStage.initModality(Modality.APPLICATION_MODAL);
-            recordingStage.setTitle("Aufnahme");            
-            Image icon = new Image(
-                getClass().getResourceAsStream("/icons/app_icon.png")
-            );
-            recordingStage.getIcons().add(icon);
+            recordingStage.setTitle(TextHelper.AUFNAHME_STAGE_TITEL);
+            recordingStage.getIcons().add(guiHelper.getIcon());
             recordingStage.setResizable(false);
             
             ProgressIndicator progressIndicator = new ProgressIndicator();
             progressIndicator.setStyle("-fx-progress-color: #00b4a0;");
             
             
-            Label label = new Label();
-            label.setStyle("-fx-font-size: 20px; -fx-padding: 8px;");
+            Label lblTextTemp = new Label();
+            lblTextTemp.setFont(TextHelper.FONT_AUFNAHME_STAGE);
+            lblTextTemp.setPadding(new Insets(8));
 
-            Label labelTemp = new Label("Aufnahme startet in:");
-            labelTemp.setStyle("-fx-font-size: 20px; -fx-padding: 8px;");
+            Label lblTemp = new Label(TextHelper.AUFNAHME_STAGE_COUNTDOWN_TEXT);
+            lblTemp.setFont(TextHelper.FONT_AUFNAHME_STAGE);
+            lblTemp.setPadding(new Insets(8));
             
             VBox vbox = new VBox(15);
             vbox.setAlignment(Pos.CENTER);
             vbox.setPadding(new Insets(20));
-            vbox.getChildren().addAll(labelTemp, label);
+            vbox.getChildren().addAll(lblTemp, lblTextTemp);
             
             Scene scene = new Scene(vbox, 300, 200);
             recordingStage.setScene(scene);
@@ -202,11 +186,11 @@ public class SamplesViewController extends BaseController<SamplesView> {
             serviceHelper.prepareRecording();
 
             final int[] countdown = {3};
-            label.setText(String.valueOf(countdown[0]));
+            lblTextTemp.setText(String.valueOf(countdown[0]));
             
             progressIndicator.setVisible(false);
             
-            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), label);
+            ScaleTransition scaleTransition = new ScaleTransition(Duration.seconds(1), lblTextTemp);
             scaleTransition.setFromX(4.0);
             scaleTransition.setFromY(4.0);
             scaleTransition.setToX(1.0);
@@ -218,13 +202,13 @@ public class SamplesViewController extends BaseController<SamplesView> {
                 new KeyFrame(Duration.seconds(1), event -> {
                     countdown[0]--;
                     if (countdown[0] > 0) {
-                        label.setText(String.valueOf(countdown[0]));
+                        lblTextTemp.setText(String.valueOf(countdown[0]));
                         scaleTransition.stop();
                         scaleTransition.playFromStart();
                     } else if (countdown[0] == 0) {
-                        vbox.getChildren().removeAll(labelTemp, label);
-                        vbox.getChildren().addAll(progressIndicator, label);
-                        label.setText("Aufnahme gestartet");
+                        vbox.getChildren().removeAll(lblTemp, lblTextTemp);
+                        vbox.getChildren().addAll(progressIndicator, lblTextTemp);
+                        lblTextTemp.setText(TextHelper.AUFNAHME_STAGE_GESTARTET_TEXT);
                         progressIndicator.setVisible(true);
                     }
                 })
@@ -240,7 +224,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
                     if (!isNowRecording) {
                         Platform.runLater(() -> {
                             recordingStage.close();
-                            new PopupMessage("Aufnahme erstellt.", root().btnRecord, 0, 0, OVERLAY_DURATION_MS, true);
+                            new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_ERSTELLT, root().btnRecord, 0, 0, OVERLAY_DURATION_MS, true);
                         });
                         serviceHelper.recordingProperty().removeListener(this);
                     }
@@ -253,6 +237,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
             });
 
             recordingStage.show();
+            guiHelper.setLoopSelection(false);
         });
 
     }
@@ -260,31 +245,13 @@ public class SamplesViewController extends BaseController<SamplesView> {
     private void onRename(){
         AudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
         if(selectedRecording != null){
-            TextInputDialog dialog = new TextInputDialog(selectedRecording.getDisplayName());
-            dialog.setTitle("Aufnahme umbenennen");
-            dialog.setHeaderText("Neuen Namen eingeben:");
-            dialog.setContentText("Name:");
-            dialog.getDialogPane().setMinWidth(300);
-            dialog.getDialogPane().setMinHeight(170);
-            
-            Image icon = new Image(
-                getClass().getResourceAsStream("/icons/app_icon.png")
-            );
-            Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-            stage.getIcons().add(icon);
-
-            dialog.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-            dialog.getDialogPane().getStyleClass().add("custom-dialog");
-            dialog.getDialogPane().getStyleClass().add("custom-rename");
-
-            dialog.showAndWait().ifPresent(newName -> {
-                if(!newName.trim().isEmpty()){
-                    serviceHelper.setSelectedRecordingDisplayName(selectedRecording, newName);
-                    observableRecordings.setAll(serviceHelper.getSamplePlayers());
-                    root().listView.getSelectionModel().select(selectedRecording);
-                    new PopupMessage("Sample umbenannt zu: " + selectedRecording.getDisplayName(), root().btnRename, 0, -0, OVERLAY_DURATION_MS, true);
-                }
-            });
+            String newName = guiHelper.getDialogueManager().showUmbenennenDialogue(selectedRecording);
+            if(newName != null){
+                serviceHelper.setSelectedRecordingDisplayName(selectedRecording, newName);
+                observableRecordings.setAll(serviceHelper.getSamplePlayers());
+                root().listView.getSelectionModel().select(selectedRecording);
+                new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_UMBENANNT + selectedRecording.getDisplayName(), root().btnRename, 0, -0, OVERLAY_DURATION_MS, true);
+            }    
         }
     }
 
@@ -292,7 +259,14 @@ public class SamplesViewController extends BaseController<SamplesView> {
 
         boolean deleteAll = false;
         if(serviceHelper.getSelectedCount() > 1){
-            deleteAll = showFrageDialog();
+            deleteAll = guiHelper.getDialogueManager().showConfirmationDialogue(
+                TextHelper.DELETE_ALL_DIALOGUE_TITLE, 
+                TextHelper.DELETE_ALL_DIALOGUE_HEADER, 
+                TextHelper.DELETE_ALL_DIALOGUE_MESSAGE, 
+                TextHelper.DELETE_ALL_DIALOGUE_CONFIRM_BUTTON, 
+                TextHelper.DELETE_ALL_DIALOGUE_DENY_BUTTON
+            );
+
             if(deleteAll){
                 guiHelper.setdisableEffects(true);
                 
@@ -303,7 +277,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
                 
                 observableRecordings.clear();
                 observableRecordings.setAll(serviceHelper.getSamplePlayers());
-                new PopupMessage("Alle ausgewählten Samples gelöscht", root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_DELETED, root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
                 guiHelper.setdisableEffects(false);
             }
         }
@@ -316,7 +290,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
                 
                 observableRecordings.clear();
                 observableRecordings.setAll(serviceHelper.getSamplePlayers());
-                new PopupMessage("Sample gelöscht", root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(TextHelper.POPUP_AUFNAHME_DELETED, root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
                 guiHelper.setdisableEffects(false);
             }
         }
@@ -328,36 +302,6 @@ public class SamplesViewController extends BaseController<SamplesView> {
     }
 
     private void switchToOscilloscopeView() {
-        GUI.switchView(SWITCH_VIEW_NAME);
-    }
-
-    private boolean showFrageDialog(){
-        Alert dialog = new Alert(Alert.AlertType.CONFIRMATION);
-                dialog.setTitle("Löschen");
-                dialog.setHeaderText("Alle oder Eins?");
-                dialog.setContentText("Willst du alle ausgewählten Samples oder nur das aktuell aktive Sample (lila Balken links) löschen?");
-                
-                ButtonType btnDeleteAll = new ButtonType("Alle löschen");
-                ButtonType btnDeleteCurrent = new ButtonType("Aktuelles löschen");
-                
-                dialog.getButtonTypes().setAll(btnDeleteAll, btnDeleteCurrent);
-                
-                dialog.getDialogPane().setMinWidth(280);
-                dialog.getDialogPane().setMinHeight(170);
-                
-                Image icon = new Image(
-                    getClass().getResourceAsStream("/icons/app_icon.png")
-                );
-                Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
-                stage.getIcons().add(icon);
-                
-                dialog.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-                dialog.getDialogPane().getStyleClass().add("custom-dialog");
-                dialog.getDialogPane().getStyleClass().add("custom-frage");
-                
-                Optional<ButtonType> result = dialog.showAndWait();
-                
-                return result.isPresent() && result.get() == btnDeleteAll;
-
+        GUI.switchView(TextHelper.SWITCH_VIEW_NAME_OSZILLOSKOPE);
     }
 }

@@ -7,21 +7,16 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Tooltip;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
 import presentation.GUI;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class OscilloscopeViewController extends BaseController<OscilloscopeView> {
-
-    private final Font tooltipFont = new Font(13);
-    private final String SWITCH_VIEW_NAME = "SamplesView";
     
     private AnimationTimer oscilloscopeTimer;
     private AudioOutput masterOutput;
     private boolean timerRunning = false;
     private float scaleFactor;
-
-    // IServiceHelper serviceHelper;
 
     public OscilloscopeViewController(IServiceHelper serviceHelper, GUIHelper guiHelper) {
         setRoot(new OscilloscopeView());
@@ -45,10 +40,10 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
         
         startOscilloscope();
 
-        root().scaleLabel.setText("Scale: " + (int) root().scaleSlider.getValue());
+        root().scaleLabel.setText(TextHelper.SCALE + (int) root().scaleSlider.getValue());
         root().scaleSlider.valueProperty().addListener((obs, oldVal, newVal) -> {
             scaleFactor = newVal.floatValue();
-            root().scaleLabel.setText("Scale: " + newVal.intValue());
+            root().scaleLabel.setText(TextHelper.SCALE + newVal.intValue());
         });
         
         root().sceneProperty().addListener((obs, oldScene, newScene) -> {
@@ -58,11 +53,10 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
             }
         });
 
-        Tooltip switchTooltip = new Tooltip("Ansicht Wechseln");
-        switchTooltip.setFont(tooltipFont);
+        Tooltip switchTooltip = new Tooltip(TextHelper.TOOLTIP_SWITCH_VIEW_TEXT);
+        switchTooltip.setFont(TextHelper.FONT_TOOLTIP);
         root().switchView.setTooltip(switchTooltip);
-        root().samplesLabel.setText("Samplerate: " + masterOutput.bufferSize());
-
+        
         initializeControlls();
     }
     
@@ -140,7 +134,7 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
         if (oscilloscopeTimer != null) {
             oscilloscopeTimer.stop();
         }
-        GUI.switchView(SWITCH_VIEW_NAME);
+        GUI.switchView(TextHelper.SWITCH_VIEW_NAME_SAMPLE);
     }
     
 }

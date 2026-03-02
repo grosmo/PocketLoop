@@ -2,8 +2,25 @@ package presentation;
 
 import javafx.beans.property.BooleanProperty;
 import javafx.beans.property.SimpleBooleanProperty;
+import javafx.scene.image.Image;
+import presentation.uicomponents.DialogueManager;
 
 public class GUIHelper {
+
+    DialogueManager dialogueManager;
+    public DialogueManager getDialogueManager() {
+        return dialogueManager;
+    }
+    
+    Image icon;
+    public Image getIcon() {
+        return icon;
+    }
+
+    public GUIHelper() {
+        dialogueManager = new DialogueManager(this);
+        icon = new Image(getClass().getResourceAsStream("/icons/app_icon.png"));
+    }
 
     private final BooleanProperty updateSamplesList = new SimpleBooleanProperty(true);
     public BooleanProperty updateSamplesListProperty(){
