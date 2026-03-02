@@ -4,6 +4,7 @@ import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import javafx.beans.property.BooleanProperty;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class PitchShiftSidebarController extends BaseSidebarController<PitchShiftSidebar> {
 
@@ -19,6 +20,10 @@ public class PitchShiftSidebarController extends BaseSidebarController<PitchShif
     public void initialize() {
         setBasicEvents();
         setSaveButtonEvent(EffectType.PITCH_SHIFT);
+        
+        root().btnSave.setText(TextHelper.SAFE);
+        root().titleLabel.setText(TextHelper.EFFEKT_PITCH_SHIFT_TITLE);
+        root().lblKnobNote.setText(TextHelper.EFFEKT_NOTE);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(getServiceHelper().getAktuellesSample() != null){ 

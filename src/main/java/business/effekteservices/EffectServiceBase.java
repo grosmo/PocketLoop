@@ -3,7 +3,6 @@ package business.effekteservices;
 import ddf.minim.UGen;
 
 public abstract class EffectServiceBase {
-
     private boolean isEnabled;
     public boolean isEnabled() {
         return isEnabled;

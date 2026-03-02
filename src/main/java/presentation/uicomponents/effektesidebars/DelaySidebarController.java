@@ -3,6 +3,7 @@ package presentation.uicomponents.effektesidebars;
 import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class DelaySidebarController extends BaseSidebarController<DelaySidebar> {
 
@@ -18,6 +19,10 @@ public class DelaySidebarController extends BaseSidebarController<DelaySidebar> 
     public void initialize() {
         setBasicEvents();
         initializeConditionsListener();
+
+        root().titleLabel.setText(TextHelper.EFFEKT_DELAY_TITLE);
+        root().lblKnobDelayTime.setText(TextHelper.EFFEKT_TIME);
+        root().lblKnobFeedback.setText(TextHelper.EFFEKT_FEEDBACK);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(getServiceHelper().getAktuellesSample() != null){

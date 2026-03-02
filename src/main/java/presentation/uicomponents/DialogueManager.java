@@ -2,7 +2,7 @@ package presentation.uicomponents;
 
 import java.util.Optional;
 
-import business.AudioSamplePlayer;
+import business.IAudioSamplePlayer;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TextInputDialog;
@@ -25,9 +25,9 @@ public class DialogueManager {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(guiHelper.getIcon());
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-        alert.getDialogPane().getStyleClass().add("custom-dialog");
-        alert.getDialogPane().getStyleClass().add("custom-alert");
+        alert.getDialogPane().getStylesheets().add(getClass().getResource(TextHelper.CSS_PFAD).toExternalForm());
+        alert.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_DIALOGUE);
+        alert.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_ALERT);
         alert.showAndWait();
     }
 
@@ -44,28 +44,28 @@ public class DialogueManager {
 
         Stage stage = (Stage) alert.getDialogPane().getScene().getWindow();
         stage.getIcons().add(guiHelper.getIcon());
-        alert.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-        alert.getDialogPane().getStyleClass().add("custom-dialog");
-        alert.getDialogPane().getStyleClass().add("custom-frage");
+        alert.getDialogPane().getStylesheets().add(getClass().getResource(TextHelper.CSS_PFAD).toExternalForm());
+        alert.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_DIALOGUE);
+        alert.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_FRAGE);
         
         Optional<ButtonType> result = alert.showAndWait();
         return result.isPresent() && result.get() == btnConfirm;
     }
 
-    public String showUmbenennenDialogue(AudioSamplePlayer selectedRecording) {
+    public String showUmbenennenDialogue(IAudioSamplePlayer selectedRecording, String title, String header, String content) {
         TextInputDialog dialog = new TextInputDialog(selectedRecording.getDisplayName());
-        dialog.setTitle(TextHelper.RENAME_DIALOGUE_TITLE);
-        dialog.setHeaderText(TextHelper.RENAME_DIALOGUE_HEADER);
-        dialog.setContentText(TextHelper.RENAME_DIALOGUE_CONTENT);
+        dialog.setTitle(title);
+        dialog.setHeaderText(header);
+        dialog.setContentText(content);
         dialog.getDialogPane().setMinWidth(300);
         dialog.getDialogPane().setMinHeight(170);
         
         Stage stage = (Stage) dialog.getDialogPane().getScene().getWindow();
         stage.getIcons().add(guiHelper.getIcon());
 
-        dialog.getDialogPane().getStylesheets().add(getClass().getResource("/presentation/style.css").toExternalForm());
-        dialog.getDialogPane().getStyleClass().add("custom-dialog");
-        dialog.getDialogPane().getStyleClass().add("custom-rename");
+        dialog.getDialogPane().getStylesheets().add(getClass().getResource(TextHelper.CSS_PFAD).toExternalForm());
+        dialog.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_DIALOGUE);
+        dialog.getDialogPane().getStyleClass().add(TextHelper.STYLECLASS_CUSTOM_RENAME);
 
         Optional<String> result = dialog.showAndWait();
         if (result.isPresent() && !result.get().trim().isEmpty()) {

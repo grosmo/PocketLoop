@@ -6,7 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
+import presentation.TextHelper;
 import presentation.uicomponents.uicontrols.AnimatedToggle;
 
 public abstract class BaseSidebar extends HBox {
@@ -19,7 +19,7 @@ public abstract class BaseSidebar extends HBox {
     
     protected void createDescriptionBox(String description, String descriptionText) {
         Label lblLiveEffekte = new Label(description);
-        lblLiveEffekte.setFont(new Font(35));
+        lblLiveEffekte.setFont(TextHelper.FONT_35);
         Label lblLiveEffekteDefinition = new Label(descriptionText);
         lblLiveEffekteDefinition.setWrapText(true);
         VBox liveEffekteBox = new VBox(lblLiveEffekte, lblLiveEffekteDefinition);

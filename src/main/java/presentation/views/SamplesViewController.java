@@ -2,7 +2,7 @@ package presentation.views;
 
 import java.util.ArrayList;
 import business.IServiceHelper;
-import business.AudioSamplePlayer;
+import business.IAudioSamplePlayer;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -42,7 +42,7 @@ import presentation.TextHelper;
 public class SamplesViewController extends BaseController<SamplesView> {
     private final int OVERLAY_DURATION_MS = 600;
 
-    ObservableList<AudioSamplePlayer> observableRecordings;
+    ObservableList<IAudioSamplePlayer> observableRecordings;
     ArrayList<BaseSidebarController> sidebarControllers;
 
     public SamplesViewController(IServiceHelper serviceHelper, GUIHelper guiHelper){
@@ -57,7 +57,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
         sidebarControllers.add(new PitchShiftSidebarController(serviceHelper, guiHelper));
         sidebarControllers.add(new BitcrusherSidebarController(serviceHelper, guiHelper));
         this.observableRecordings = FXCollections.observableArrayList(serviceHelper.getSamplePlayers());
-        setRoot(new SamplesView(observableRecordings, sidebarControllers));
+        setRoot(new SamplesView(observableRecordings, sidebarControllers, this.guiHelper));
         initialize();
     }
 
@@ -65,8 +65,6 @@ public class SamplesViewController extends BaseController<SamplesView> {
     public void initialize() {
 
         root().switchView.setOnAction(e -> {
-            root().switchView.getStyleClass().removeAll("btn-switch-root", "btn-switch-root-checked");
-            root().switchView.getStyleClass().add("btn-switch-root");
             GUI.setToggleSwitchView();
             root().switchView.setSelected(GUI.getToggleSwitchView());
             switchToOscilloscopeView();
@@ -110,7 +108,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
                 @Override
                 public void handle(MouseEvent event) {
                     if(event.getClickCount() == 2 && (!cell.isEmpty())) {
-                        AudioSamplePlayer item = cell.getItem();
+                        IAudioSamplePlayer item = cell.getItem();
                         boolean isPlaying = item.isPlaying();
                         item.setPlaying(!isPlaying);
                     }
@@ -122,7 +120,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
 		root().listView.prefWidthProperty().bind(((Region) root().listView.getParent()).widthProperty());
 		root().listView.prefHeightProperty().bind(((Region) root().listView.getParent()).heightProperty());
         
-        root().listView.getItems().addListener((ListChangeListener<AudioSamplePlayer>) change -> {
+        root().listView.getItems().addListener((ListChangeListener<IAudioSamplePlayer>) change -> {
             if(root().listView.getItems().isEmpty()){
                 guiHelper.setNoSamplesInList(true);
                 root().noSamplesLabel.setVisible(true);
@@ -163,7 +161,7 @@ public class SamplesViewController extends BaseController<SamplesView> {
             recordingStage.setResizable(false);
             
             ProgressIndicator progressIndicator = new ProgressIndicator();
-            progressIndicator.setStyle("-fx-progress-color: #00b4a0;");
+            progressIndicator.setStyle("-fx-progress-color: " + TextHelper.COLOR_PRIMARY_GREEN + ";");
             
             
             Label lblTextTemp = new Label();
@@ -224,7 +222,14 @@ public class SamplesViewController extends BaseController<SamplesView> {
                     if (!isNowRecording) {
                         Platform.runLater(() -> {
                             recordingStage.close();
-                            new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_ERSTELLT, root().btnRecord, 0, 0, OVERLAY_DURATION_MS, true);
+                            new PopupMessage(
+                                TextHelper.POPUP_MEHRERE_AUFNAHMEN_ERSTELLT, 
+                                root().btnRecord, 
+                                0, 
+                                0, 
+                                OVERLAY_DURATION_MS, 
+                                true
+                            );
                         });
                         serviceHelper.recordingProperty().removeListener(this);
                     }
@@ -243,14 +248,27 @@ public class SamplesViewController extends BaseController<SamplesView> {
     }
 
     private void onRename(){
-        AudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
+        IAudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
         if(selectedRecording != null){
-            String newName = guiHelper.getDialogueManager().showUmbenennenDialogue(selectedRecording);
+            String newName = guiHelper.getDialogueManager().showUmbenennenDialogue(
+                selectedRecording, 
+                TextHelper.RENAME_DIALOGUE_TITLE, 
+                TextHelper.RENAME_DIALOGUE_HEADER, 
+                TextHelper.RENAME_DIALOGUE_CONTENT
+            );
             if(newName != null){
                 serviceHelper.setSelectedRecordingDisplayName(selectedRecording, newName);
                 observableRecordings.setAll(serviceHelper.getSamplePlayers());
                 root().listView.getSelectionModel().select(selectedRecording);
-                new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_UMBENANNT + selectedRecording.getDisplayName(), root().btnRename, 0, -0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(
+                    TextHelper.POPUP_MEHRERE_AUFNAHMEN_UMBENANNT 
+                    + selectedRecording.getDisplayName(), 
+                    root().btnRename,
+                    0, 
+                    -0, 
+                    OVERLAY_DURATION_MS, 
+                    true
+                );
             }    
         }
     }
@@ -271,26 +289,40 @@ public class SamplesViewController extends BaseController<SamplesView> {
                 guiHelper.setdisableEffects(true);
                 
                 var tempList = serviceHelper.getSamplePlayers().stream()
-                    .filter(AudioSamplePlayer::isLoopSelected).toList();
+                    .filter(IAudioSamplePlayer::isLoopSelected).toList();
 
                 tempList.forEach(sample -> serviceHelper.deleteRecording(sample));
                 
                 observableRecordings.clear();
                 observableRecordings.setAll(serviceHelper.getSamplePlayers());
-                new PopupMessage(TextHelper.POPUP_MEHRERE_AUFNAHMEN_DELETED, root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(
+                    TextHelper.POPUP_MEHRERE_AUFNAHMEN_DELETED, 
+                    root().btnDelete, 
+                    0,
+                    0, 
+                    OVERLAY_DURATION_MS, 
+                    true
+                );
                 guiHelper.setdisableEffects(false);
             }
         }
 
         if(!deleteAll){
-            AudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
+            IAudioSamplePlayer selectedRecording = root().listView.getSelectionModel().getSelectedItem();
             if(selectedRecording != null){
                 guiHelper.setdisableEffects(true);
                 serviceHelper.deleteRecording(selectedRecording);
                 
                 observableRecordings.clear();
                 observableRecordings.setAll(serviceHelper.getSamplePlayers());
-                new PopupMessage(TextHelper.POPUP_AUFNAHME_DELETED, root().btnDelete, 0, 0, OVERLAY_DURATION_MS, true);
+                new PopupMessage(
+                    TextHelper.POPUP_AUFNAHME_DELETED, 
+                    root().btnDelete, 
+                    0, 
+                    0, 
+                    OVERLAY_DURATION_MS, 
+                    true
+                );
                 guiHelper.setdisableEffects(false);
             }
         }

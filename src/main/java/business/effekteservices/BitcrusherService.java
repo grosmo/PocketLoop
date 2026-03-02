@@ -3,8 +3,6 @@ package business.effekteservices;
 import ddf.minim.UGen;
 
 public class BitcrusherService extends EffectServiceBase {
-
-    
     private int bitDepth = 8;
     public int getBitDepth() {
         return bitDepth;

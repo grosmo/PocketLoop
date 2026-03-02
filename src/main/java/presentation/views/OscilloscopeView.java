@@ -9,7 +9,6 @@ import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import presentation.TextHelper;
 
 public class OscilloscopeView extends BaseView {
@@ -21,16 +20,16 @@ public class OscilloscopeView extends BaseView {
     public OscilloscopeView() {
 
         oscilloscope = new Canvas(800, 400);
-        oscilloscope.getStyleClass().add("oscilloscope-canvas");
+        oscilloscope.getStyleClass().add(TextHelper.STYLECLASS_OSCILLOSCOPE_CANVAS);
         HBox switchViewContainer = createTopBar();
-        switchView.getStyleClass().add("btn-switch-view-base");
-        switchView.getStyleClass().add("btn-switch-view-checked");
+        switchView.getStyleClass().add(TextHelper.STYLECLASS_BTN_SWITCH_VIEW_BASE);
+        switchView.getStyleClass().add(TextHelper.STYLECLASS_BTN_SWITCH_VIEW_CHECKED);
         viewLabel.setText(TextHelper.OSZILLOSKOP);
         
         scaleLabel = new Label();
-        scaleLabel.setFont(new Font(15));
+        scaleLabel.setFont(TextHelper.FONT_15);
         scaleSlider = new Slider(1.0, 35.0, 8.0);
-        scaleSlider.getStyleClass().add("slider-oscilloscope-scale");
+        scaleSlider.getStyleClass().add(TextHelper.STYLECLASS_SLIDE_OSCILLOSCOPE_SCALE);
         scaleSlider.setMaxWidth(Double.MAX_VALUE);
 
         HBox scaleBox = new HBox(10, scaleLabel, scaleSlider);

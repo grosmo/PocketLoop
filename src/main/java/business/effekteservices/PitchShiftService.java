@@ -3,7 +3,6 @@ package business.effekteservices;
 import ddf.minim.UGen;
 
 public class PitchShiftService extends EffectServiceBase {
-
     private float pitchShift = 0.0f;
     public float getPitchShift() {
         return pitchShift;

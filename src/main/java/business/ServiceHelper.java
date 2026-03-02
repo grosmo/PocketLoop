@@ -27,9 +27,9 @@ public class ServiceHelper implements IServiceHelper {
         return SAMPLE_RATE;
     }
 
-    private ArrayList<AudioSamplePlayer> samplePlayers = new ArrayList<>();
+    private ArrayList<IAudioSamplePlayer> samplePlayers = new ArrayList<>();
     @Override
-    public ArrayList<AudioSamplePlayer> getSamplePlayers(){
+    public ArrayList<IAudioSamplePlayer> getSamplePlayers(){
         return samplePlayers;
     }
 
@@ -66,17 +66,17 @@ public class ServiceHelper implements IServiceHelper {
         return masterGain;
     }
     
-    private final ObjectProperty<AudioSamplePlayer> aktuellesSample = new SimpleObjectProperty<>();
+    private final ObjectProperty<IAudioSamplePlayer> aktuellesSample = new SimpleObjectProperty<>();
     @Override
-    public AudioSamplePlayer getAktuellesSample(){
+    public IAudioSamplePlayer getAktuellesSample(){
         return aktuellesSample.get();
     }
     @Override
-    public void setAktuellesSample(AudioSamplePlayer sample){
+    public void setAktuellesSample(IAudioSamplePlayer sample){
         this.aktuellesSample.set(sample);
     }
     @Override
-    public ObjectProperty<AudioSamplePlayer> aktuellesSampleProperty(){
+    public ObjectProperty<IAudioSamplePlayer> aktuellesSampleProperty(){
         return aktuellesSample;
     }
     
@@ -110,7 +110,7 @@ public class ServiceHelper implements IServiceHelper {
         recorderService.stopRecording();
     }
     @Override
-    public void deleteRecording(AudioSamplePlayer selectedSample) {
+    public void deleteRecording(IAudioSamplePlayer selectedSample) {
         selectedSample.setPlaying(false);
         samplePlayers.remove(selectedSample);
     }
@@ -137,13 +137,15 @@ public class ServiceHelper implements IServiceHelper {
     }
 
     @Override
-    public void setSelectedRecordingDisplayName(AudioSamplePlayer selectedSample, String newName) {
-        selectedSample.getSampleModel().setDisplayName(newName);
+    public void setSelectedRecordingDisplayName(IAudioSamplePlayer selectedSample, String newName) {
+        if (selectedSample instanceof AudioSamplePlayer) {
+            ((AudioSamplePlayer) selectedSample).getSampleModel().setDisplayName(newName);
+        }
     }
 
     @Override
     public boolean isBitcrusherEnabled() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.isBitcrusherEnabled();
         }
@@ -151,7 +153,7 @@ public class ServiceHelper implements IServiceHelper {
     }
     @Override
     public void setBitcrusherEnabled(boolean value) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.setBitcrusherEnabled(value);
         }
@@ -160,7 +162,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public BooleanProperty bitcrusherEnabledProperty() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.bitcrusherEnabledProperty();
         }
@@ -169,7 +171,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public boolean isDelayEnabled() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.isDelayEnabled();
         }
@@ -177,14 +179,14 @@ public class ServiceHelper implements IServiceHelper {
     }
     @Override
     public void setDelayEnabled(boolean value) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.setDelayEnabled(value);
         }
     }
     @Override
     public BooleanProperty delayEnabledProperty() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.delayEnabledProperty();
         }
@@ -193,7 +195,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public boolean isFlangerEnabled() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.isFlangerEnabled();
         }
@@ -201,14 +203,14 @@ public class ServiceHelper implements IServiceHelper {
     }
     @Override
     public void setFlangerEnabled(boolean value) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.setFlangerEnabled(value);
         }
     }
     @Override
     public BooleanProperty flangerEnabledProperty() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.flangerEnabledProperty();
         }
@@ -217,7 +219,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public boolean isPitchShiftEnabled() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.isPitchShiftEnabled();
         }
@@ -225,14 +227,14 @@ public class ServiceHelper implements IServiceHelper {
     }
     @Override
     public void setPitchShiftEnabled(boolean value) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.setPitchShiftEnabled(value);
         }
     }
     @Override
     public BooleanProperty pitchShiftEnabledProperty() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.pitchShiftEnabledProperty();
         }
@@ -241,7 +243,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public boolean isReverseEnabled() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.isReverseEnabled();
         }
@@ -249,14 +251,14 @@ public class ServiceHelper implements IServiceHelper {
     }
     @Override
     public void setReverseEnabled(boolean value) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.setReverseEnabled(value);
         }
     }
     @Override
     public BooleanProperty reverseEnabledProperty() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.reverseEnabledProperty();
         }
@@ -265,7 +267,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public int getBitcrushDepth() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getBitcrusherService().getBitDepth();
         }
@@ -274,7 +276,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setBitcrushDepth(int depth) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getBitcrusherService().setBitDepth(depth);
         }
@@ -282,7 +284,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public int getBitcrushSampleRateDivider() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getBitcrusherService().getBitcrushSampleRateDivider();
         }
@@ -291,7 +293,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setBitcrushSampleRateDivider(int divider) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getBitcrusherService().setBitcrushSampleRateDivider(divider);
         }
@@ -299,7 +301,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getDelayTime() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getDelayService().getDelayTime();
         }
@@ -308,7 +310,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setDelayTime(float time) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getDelayService().setDelayTime(time);
         }
@@ -316,7 +318,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getDelayFeedback() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getDelayService().getFeedback();
         }
@@ -325,7 +327,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setDelayFeedback(float feedback) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getDelayService().setFeedback(feedback);
         }
@@ -333,7 +335,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public UGen getDelayEffect() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getDelayService().getEffect();
         }
@@ -342,7 +344,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getFlangerRate() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getFlangerService().getFlangerRate();
         }
@@ -351,7 +353,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setFlangerRate(float rate) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getFlangerService().setFlangerRate(rate);
         }
@@ -359,7 +361,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getFlangerDepth() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getFlangerService().getFlangerDepth();
         }
@@ -368,7 +370,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setFlangerDepth(float depth) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getFlangerService().setFlangerDepth(depth);
         }
@@ -376,7 +378,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getFlangerDelay() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getFlangerService().getFlangerDelay();
         }
@@ -385,7 +387,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setFlangerDelay(float delay) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getFlangerService().setFlangerDelay(delay);
         }
@@ -393,7 +395,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public UGen getFlangerEffect() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getFlangerService().getEffect();
         }
@@ -402,7 +404,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public float getPitchShiftSemitones() {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             return sample.effectManager.getPitchShiftService().getPitchShift();
         }
@@ -411,7 +413,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void setPitchShiftSemitones(float semitones) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.effectManager.getPitchShiftService().setPitchShift(semitones);
         }
@@ -419,7 +421,7 @@ public class ServiceHelper implements IServiceHelper {
 
     @Override
     public void applyEffect(EffectType effectType, boolean enabled) {
-        AudioSamplePlayer sample = aktuellesSample.get();
+        AudioSamplePlayer sample = (AudioSamplePlayer) aktuellesSample.get();
         if(sample != null) {
             sample.applyEffect(effectType, enabled);
         }

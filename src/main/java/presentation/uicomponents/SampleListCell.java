@@ -1,6 +1,6 @@
 package presentation.uicomponents;
 
-import business.AudioSamplePlayer;
+import business.IAudioSamplePlayer;
 import javafx.geometry.Pos;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
@@ -11,14 +11,13 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.beans.value.ChangeListener;
 import javafx.geometry.Insets;
 import presentation.GUIHelper;
 import presentation.TextHelper;
 import presentation.uicomponents.uicontrols.RotaryKnob;
 
-public class SampleListCell extends ListCell<AudioSamplePlayer> {
+public class SampleListCell extends ListCell<IAudioSamplePlayer> {
     private CheckBox chckBxPlay;
     private CheckBox chckBxSelectedPlay;
     private Label label;
@@ -32,7 +31,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
     private ChangeListener<Number> volumeListener;
     private ChangeListener<Boolean> playListener;
     private ChangeListener<Boolean> playingPropertyListener;
-    private AudioSamplePlayer currentItem;
+    private IAudioSamplePlayer currentItem;
     
     private ImageView imageView;
     private Image playImage;
@@ -42,10 +41,10 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         super();
 
         chckBxPlay = new CheckBox();
-        chckBxPlay.getStyleClass().remove("check-box");
+        chckBxPlay.getStyleClass().remove(TextHelper.STYLECLASS_CHECK_BOX);
         
-        playImage = new Image(getClass().getResourceAsStream("/icons/play_circle.png"));
-        stopImage = new Image(getClass().getResourceAsStream("/icons/stop_circle.png"));
+        playImage = guiHelper.getPlayImage();
+        stopImage = guiHelper.getStopImage();
         
         imageView = new ImageView();
         imageView.setFitWidth(25);
@@ -58,7 +57,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         chckBxPlay.setTooltip(tooltip);
 
         chckBxSelectedPlay = new CheckBox();
-        chckBxSelectedPlay.getStyleClass().add("play-dot-checkbox");
+        chckBxSelectedPlay.getStyleClass().add(TextHelper.STYLECLASS_PLAY_DOT);
 
         Tooltip selectedPlayTooltip = new Tooltip(TextHelper.TOOLTIP_LISTCELL_SELECT);
         selectedPlayTooltip.setFont(TextHelper.FONT_TOOLTIP);
@@ -80,10 +79,10 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         });
         
         label = new Label();
-        label.setFont(new Font(15));
+        label.setFont(TextHelper.FONT_15);
         label.setAlignment(Pos.CENTER);
         label.setPadding(new Insets(0,0,0,5));
-        label.setStyle("-fx-text-fill: black;");
+        label.setStyle(TextHelper.STYLECLASS_TEXTFILL_BLACK);
         
         HBox.setHgrow(label, Priority.ALWAYS);
         
@@ -97,7 +96,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
         volumeBox.setPrefWidth(60);
         volumeBox.setMaxWidth(60);
         Tooltip volumeTooltip = new Tooltip(TextHelper.TOOLTIP_LISTCELL_VOLUME);
-        volumeTooltip.setFont(new Font(13));
+        volumeTooltip.setFont(TextHelper.FONT_13);
         Tooltip.install(volumeKnob, volumeTooltip);
         
         topRow = new HBox();
@@ -117,7 +116,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
     }
     
     @Override
-    protected void updateItem(AudioSamplePlayer item, boolean empty) {
+    protected void updateItem(IAudioSamplePlayer item, boolean empty) {
         super.updateItem(item, empty);
         
         if (empty || item == null) {
@@ -135,7 +134,7 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
             }
             currentItem = null;
             
-            getStyleClass().remove("playing");
+            getStyleClass().remove(TextHelper.STYLECLASS_PLAYING);
             setText(null);
             setGraphic(null);
         } else {
@@ -179,11 +178,11 @@ public class SampleListCell extends ListCell<AudioSamplePlayer> {
     private void updatePlayingStyle(boolean isNowPlaying) {
         imageView.setImage(isNowPlaying ? stopImage : playImage);
         if (isNowPlaying) {
-            if (!getStyleClass().contains("playing")) {
-                getStyleClass().add("playing");
+            if (!getStyleClass().contains(TextHelper.STYLECLASS_PLAYING)) {
+                getStyleClass().add(TextHelper.STYLECLASS_PLAYING);
             }
         } else {
-            getStyleClass().removeAll("playing");
+            getStyleClass().removeAll(TextHelper.STYLECLASS_PLAYING);
             // CSS update erzwingen, damit die Style-Klasse sofort upgedated werden
             applyCss();
             requestLayout();

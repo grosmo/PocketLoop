@@ -2,7 +2,7 @@ package presentation.views;
 
 import java.util.List;
 
-import business.AudioSamplePlayer;
+import business.IAudioSamplePlayer;
 import javafx.collections.ObservableList;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -10,12 +10,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.StackPane;
+import presentation.GUIHelper;
 import presentation.TextHelper;
 import presentation.uicomponents.effektesidebars.BaseSidebarController;
 
@@ -25,18 +25,18 @@ public class SamplesView extends BaseView {
     Button btnRename;
     Button btnDelete;
 
-    ListView<AudioSamplePlayer> listView;
+    ListView<IAudioSamplePlayer> listView;
     HBox effectsContainer;
     ScrollPane effectsScrollPane;
 
     Label noSamplesLabel;
     StackPane listViewBox;
 
-    public SamplesView(ObservableList<AudioSamplePlayer> observableRecordingsList, List<BaseSidebarController> sidebarControllers){
+    public SamplesView(ObservableList<IAudioSamplePlayer> observableRecordingsList, List<BaseSidebarController> sidebarControllers, GUIHelper guiHelper) {
         
         HBox switchViewContainer = createTopBar();
-        switchView.getStyleClass().add("btn-switch-view-base");
-        switchView.getStyleClass().add("btn-switch-view");
+        switchView.getStyleClass().add(TextHelper.STYLECLASS_BTN_SWITCH_VIEW_BASE);
+        switchView.getStyleClass().add(TextHelper.STYLECLASS_BTN_SWITCH_VIEW);
         viewLabel.setText(TextHelper.SAMPLES);
 
         listView = new ListView<>(observableRecordingsList);
@@ -47,10 +47,10 @@ public class SamplesView extends BaseView {
         listViewBox.getChildren().add(listView);
         listViewBox.setAlignment(Pos.CENTER);
         listViewBox.setMinHeight(322);
-        listViewBox.getStyleClass().add("list-view-box");
+        listViewBox.getStyleClass().add(TextHelper.STYLECLASS_LIST_VIEW_BOX);
 
         noSamplesLabel = new Label(TextHelper.NO_RECORDING_TEXT);
-        noSamplesLabel.getStyleClass().add("no-samples-label");
+        noSamplesLabel.getStyleClass().add(TextHelper.STYLECLASS_NO_SAMPLES_LABEL);
         listViewBox.getChildren().add(noSamplesLabel);
 
         HBox buttonBox = new HBox();
@@ -58,34 +58,28 @@ public class SamplesView extends BaseView {
         buttonBox.setAlignment(Pos.CENTER);
         buttonBox.setMaxHeight(48);
         buttonBox.setSpacing(20);
-        buttonBox.getStyleClass().add("button-box");
+        buttonBox.getStyleClass().add(TextHelper.STYLECLASS_BUTTON_BOX);
         
         btnRecord = new Button();
-        Image micIcon = new Image(getClass().getResourceAsStream("/icons/microphone.png"));
-        Image micHoverIcon = new Image(getClass().getResourceAsStream("/icons/microphone_hover.png"));
-        ImageView micImageView = new ImageView(micIcon);
-        btnRecord.getStyleClass().remove("button");
+        ImageView micImageView = new ImageView(guiHelper.getMicIcon());
+        btnRecord.getStyleClass().remove(TextHelper.STYLECLASS_BUTTON);
         btnRecord.setGraphic(micImageView);        
-        btnRecord.setOnMouseEntered(e -> micImageView.setImage(micHoverIcon));
-        btnRecord.setOnMouseExited(e -> micImageView.setImage(micIcon));
+        btnRecord.setOnMouseEntered(e -> micImageView.setImage(guiHelper.getMicHoverIcon()));
+        btnRecord.setOnMouseExited(e -> micImageView.setImage(guiHelper.getMicIcon()));
         
         btnRename = new Button();
-        Image renameIcon = new Image(getClass().getResourceAsStream("/icons/rename.png"));
-        Image renameHoverIcon = new Image(getClass().getResourceAsStream("/icons/rename_hover.png"));
-        ImageView renameImageView = new ImageView(renameIcon);
-        btnRename.getStyleClass().remove("button");
+        ImageView renameImageView = new ImageView(guiHelper.getRenameIcon());
+        btnRename.getStyleClass().remove(TextHelper.STYLECLASS_BUTTON);
         btnRename.setGraphic(renameImageView);        
-        btnRename.setOnMouseEntered(e -> renameImageView.setImage(renameHoverIcon));
-        btnRename.setOnMouseExited(e -> renameImageView.setImage(renameIcon));
+        btnRename.setOnMouseEntered(e -> renameImageView.setImage(guiHelper.getRenameHoverIcon()));
+        btnRename.setOnMouseExited(e -> renameImageView.setImage(guiHelper.getRenameIcon()));
         
         btnDelete = new Button();
-        Image deleteIcon = new Image(getClass().getResourceAsStream("/icons/delete.png"));
-        Image deleteHoverIcon = new Image(getClass().getResourceAsStream("/icons/delete_hover.png"));
-        ImageView deleteImageView = new ImageView(deleteIcon);
-        btnDelete.getStyleClass().remove("button");
+        ImageView deleteImageView = new ImageView(guiHelper.getDeleteIcon());
+        btnDelete.getStyleClass().remove(TextHelper.STYLECLASS_BUTTON);
         btnDelete.setGraphic(deleteImageView);        
-        btnDelete.setOnMouseEntered(e -> deleteImageView.setImage(deleteHoverIcon));
-        btnDelete.setOnMouseExited(e -> deleteImageView.setImage(deleteIcon));
+        btnDelete.setOnMouseEntered(e -> deleteImageView.setImage(guiHelper.getDeleteHoverIcon()));
+        btnDelete.setOnMouseExited(e -> deleteImageView.setImage(guiHelper.getDeleteIcon()));
         
         buttonBox.getChildren().addAll(btnRecord, btnRename, btnDelete);
 

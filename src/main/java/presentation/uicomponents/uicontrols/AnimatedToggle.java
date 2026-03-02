@@ -10,6 +10,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 import javafx.util.Duration;
+import presentation.TextHelper;
 
 public class AnimatedToggle extends HBox {
     
@@ -35,7 +36,7 @@ public class AnimatedToggle extends HBox {
     public AnimatedToggle() {
         this.setAlignment(Pos.CENTER_LEFT);
         this.setSpacing(10);        
-        this.getStyleClass().add("animated-toggle");
+        this.getStyleClass().add(TextHelper.STYLECLASS_ANIMATED_TOGGLE);
         
         StackPane toggleContainer = new StackPane();
         toggleContainer.setMinSize(WIDTH, HEIGHT);
@@ -66,7 +67,7 @@ public class AnimatedToggle extends HBox {
         if (isSelected) {
             transition.setToX(WIDTH/2 - DOT_RADIUS - 5);
             transition.play();
-            background.setFill(Color.web("#00b4a0"));
+            background.setFill(Color.web(TextHelper.COLOR_PRIMARY_GREEN));
         } else {
             transition.setToX(-WIDTH/2 + DOT_RADIUS + 5);
             transition.play();

@@ -17,9 +17,61 @@ public class GUIHelper {
         return icon;
     }
 
+    Image playImage;
+    public Image getPlayImage() {
+        return playImage;
+    }
+
+    Image stopImage;
+    public Image getStopImage() {
+        return stopImage;
+    }
+
+    Image micIcon;
+    public Image getMicIcon() {
+        return micIcon;
+    }
+
+    Image micHoverIcon;
+    public Image getMicHoverIcon() {
+        return micHoverIcon;
+    }
+
+    Image renameIcon;
+    public Image getRenameIcon() {
+        return renameIcon;
+    }
+
+    Image renameHoverIcon;
+    public Image getRenameHoverIcon() {
+        return renameHoverIcon;
+    }
+
+    Image deleteIcon;
+    public Image getDeleteIcon() {
+        return deleteIcon;
+    }
+
+    Image deleteHoverIcon;
+    public Image getDeleteHoverIcon() {
+        return deleteHoverIcon;
+    }
+
     public GUIHelper() {
         dialogueManager = new DialogueManager(this);
+        loadIcons();
+    }
+
+    public void loadIcons(){
         icon = new Image(getClass().getResourceAsStream("/icons/app_icon.png"));
+        playImage = new Image(getClass().getResourceAsStream("/icons/play_circle.png"));
+        stopImage = new Image(getClass().getResourceAsStream("/icons/stop_circle.png"));
+        micIcon = new Image(getClass().getResourceAsStream("/icons/microphone.png"));
+        micHoverIcon = new Image(getClass().getResourceAsStream("/icons/microphone_hover.png"));
+        renameIcon = new Image(getClass().getResourceAsStream("/icons/rename.png"));
+        renameHoverIcon = new Image(getClass().getResourceAsStream("/icons/rename_hover.png"));
+        deleteIcon = new Image(getClass().getResourceAsStream("/icons/delete.png"));
+        deleteHoverIcon = new Image(getClass().getResourceAsStream("/icons/delete_hover.png"));
     }
 
     private final BooleanProperty updateSamplesList = new SimpleBooleanProperty(true);

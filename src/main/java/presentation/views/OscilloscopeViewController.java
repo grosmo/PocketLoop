@@ -31,8 +31,6 @@ public class OscilloscopeViewController extends BaseController<OscilloscopeView>
     public void initialize() {
         
         root().switchView.setOnAction(e -> {
-            root().switchView.getStyleClass().removeAll("btn-switch-root", "btn-switch-root-checked");
-            root().switchView.getStyleClass().add("btn-switch-root-checked");
             GUI.setToggleSwitchView();
             root().switchView.setSelected(GUI.getToggleSwitchView());
             switchToSamplesView();

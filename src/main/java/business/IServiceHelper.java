@@ -20,13 +20,13 @@ public interface IServiceHelper {
     
     Gain getMasterGain();
 
-    ArrayList<AudioSamplePlayer> getSamplePlayers();
+    ArrayList<IAudioSamplePlayer> getSamplePlayers();
 
-    AudioSamplePlayer getAktuellesSample();
+    IAudioSamplePlayer getAktuellesSample();
 
-    void setAktuellesSample(AudioSamplePlayer sample);
+    void setAktuellesSample(IAudioSamplePlayer sample);
 
-    ObjectProperty<AudioSamplePlayer> aktuellesSampleProperty();
+    ObjectProperty<IAudioSamplePlayer> aktuellesSampleProperty();
 
     boolean isRecording();
 
@@ -38,7 +38,7 @@ public interface IServiceHelper {
 
     void stopRecording();
 
-    void deleteRecording(AudioSamplePlayer selectedSample);
+    void deleteRecording(IAudioSamplePlayer selectedSample);
 
     int getSelectedCount();
 
@@ -46,7 +46,7 @@ public interface IServiceHelper {
 
     void stopAllPlays();
 
-    void setSelectedRecordingDisplayName(AudioSamplePlayer selectedSample, String newName);
+    void setSelectedRecordingDisplayName(IAudioSamplePlayer selectedSample, String newName);
 
     boolean isBitcrusherEnabled();
 

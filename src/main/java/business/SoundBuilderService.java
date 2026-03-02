@@ -16,10 +16,18 @@ import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 
 public class SoundBuilderService {
+
+    private static final String EFFEKT_ERWEITERUNG_REVERSE = "_reverse";
+    private static final String EFFEKT_ERWEITERUNG_PITCH = "_pitch";
+    private static final String EFFEKT_ERWEITERUNG_BITCRUSH = "_bitcrush";
+    
+    private static final String ILLEGAL_ARGUMENT = "Left channel cannot be null or empty";
+    private static final String FEHLER_EFFEKT_ANWENDEN = "FEHLER beim Anwenden des Effekts auf das Sample!";
+    private static final String FEHLER_LADEN = "FEHLER beim Laden der Audiokanäle!";
     
     protected static void writeWav(float[] leftChannel, float[] rightChannel, float sampleRate, String filePath) throws IOException {
         if(leftChannel == null || leftChannel.length == 0) {
-            throw new IllegalArgumentException("Left channel cannot be null or empty");
+            throw new IllegalArgumentException(ILLEGAL_ARGUMENT);
         }
         
         boolean stereo = (rightChannel != null && rightChannel.length > 0);
@@ -79,7 +87,7 @@ public class SoundBuilderService {
         boolean success = applyArrayEffects(effectsToApply, effectHelper, sampleModel, serviceHelper, enable);
 
         if(!success){
-            System.out.println("FEHLER beim Anwenden des Effekts auf das Sample!");
+            System.out.println(FEHLER_EFFEKT_ANWENDEN);
         }
     }
 
@@ -96,7 +104,7 @@ public class SoundBuilderService {
             float[] rightChannelData = channels > 1 ? sample.getChannel(AudioSample.RIGHT) : null;
             
             if(leftChannelData == null) {
-                System.out.println("FEHLER beim Laden der Audiokanäle!");
+                System.out.println(FEHLER_LADEN);
                 return false;
             }
 
@@ -119,21 +127,21 @@ public class SoundBuilderService {
                 leftChannel = effectHelper.getReverseService().reverseAudio(leftChannel);
                 if(rightChannel != null)
                     rightChannel = effectHelper.getReverseService().reverseAudio(rightChannel);
-                neuerPath += "_reverse";
+                neuerPath += EFFEKT_ERWEITERUNG_REVERSE;
             }
             
             if(effectsToApply == EffectType.PITCH_SHIFT) {
                 leftChannel = effectHelper.getPitchShiftService().applyPitchShift(leftChannel);
                 if(rightChannel != null)
                     rightChannel = effectHelper.getPitchShiftService().applyPitchShift(rightChannel);
-                neuerPath += "_pitch";
+                neuerPath += EFFEKT_ERWEITERUNG_PITCH;
             }
             
             if(effectsToApply == EffectType.BITCRUSHER) {
                 leftChannel = effectHelper.getBitcrusherService().applyBitcrusher(leftChannel);
                 if(rightChannel != null)
                     rightChannel = effectHelper.getBitcrusherService().applyBitcrusher(rightChannel);
-                neuerPath += "_bitcrush";
+                neuerPath += EFFEKT_ERWEITERUNG_BITCRUSH;
             }
 
             String newPath = neuerPath + originalPath.substring(lastDot);

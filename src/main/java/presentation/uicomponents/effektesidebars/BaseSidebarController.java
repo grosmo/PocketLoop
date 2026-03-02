@@ -16,6 +16,8 @@ import presentation.views.BaseController;
 
 public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseController<T> {
     private final int OVERLAY_DURATION_MS = 600;
+    private final Duration FADE_IN_DURATION = Duration.millis(400);
+    private final Duration FADE_OUT_DURATION = Duration.millis(200);
 
     ChangeListener<Object> disableReverseListener;
     ChangeListener<Object> disablePitchListener;
@@ -46,12 +48,12 @@ public abstract class BaseSidebarController<T extends BaseSidebar> extends BaseC
             contentBox.setManaged(true);
             contentBox.setOpacity(0);
             
-            FadeTransition fade = new FadeTransition(Duration.millis(400), contentBox);
+            FadeTransition fade = new FadeTransition(FADE_IN_DURATION, contentBox);
             fade.setFromValue(0.0);
             fade.setToValue(1.0);
             fade.play();
         } else {
-            FadeTransition fade = new FadeTransition(Duration.millis(200), contentBox);
+            FadeTransition fade = new FadeTransition(FADE_OUT_DURATION, contentBox);
             fade.setFromValue(1.0);
             fade.setToValue(0.0);
             fade.setOnFinished(e -> {

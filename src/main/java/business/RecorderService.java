@@ -7,6 +7,10 @@ import ddf.minim.*;
 
 public class RecorderService extends Task<Boolean> {
     private final int RECORDING_DURATION_MS = 4000; 
+    private final String RECORDINGS_DIR = "recordings";
+    private final String RECORDING_PREFIX = "recording_";
+    private final String SEPERATOR = System.getProperty("file.separator");
+    private final String RECORDING_EXTENSION = ".wav";
     
     private Minim minim;
     private AudioInput input;
@@ -17,7 +21,7 @@ public class RecorderService extends Task<Boolean> {
     protected RecorderService(ServiceHelper serviceHelper){
         this.serviceHelper = serviceHelper;
         minim = new SimpleMinim();
-        File recordingsDir = new File("recordings");
+        File recordingsDir = new File(RECORDINGS_DIR);
         if (!recordingsDir.exists()) 
             recordingsDir.mkdirs();
     }
@@ -37,7 +41,7 @@ public class RecorderService extends Task<Boolean> {
 
     // Initialisiert Audio-Input VOR dem Countdown, damit Hardware bereit ist
     protected void prepareRecording(){
-        currentRecordingFile = "recordings/recording_" + System.currentTimeMillis() + ".wav";
+        currentRecordingFile = RECORDINGS_DIR + SEPERATOR + RECORDING_PREFIX + System.currentTimeMillis() + RECORDING_EXTENSION;
         input = minim.getLineIn(Minim.STEREO, 512);
         
         if(input != null){

@@ -16,7 +16,6 @@ import presentation.views.SamplesViewController;
 import presentation.views.OscilloscopeViewController;
 import javafx.application.Application;
 import javafx.scene.Scene;
-import javafx.scene.image.Image;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -24,7 +23,6 @@ import javafx.stage.Stage;
 public class GUI extends Application {
 	private static Map<String, Pane> views;
 	private static BorderPane mainRoot;
-	Image appIcon;
 	RecorderService recorderService;
 	Thread recorderServiceThread;
 	IServiceHelper serviceHelper;
@@ -61,7 +59,7 @@ public class GUI extends Application {
 		mainRoot.setCenter(views.get(TextHelper.SWITCH_VIEW_NAME_SAMPLE));
 		Scene scene = new Scene(mainRoot);
 
-		scene.getStylesheets().add(getClass().getResource("style.css").toExternalForm());
+		scene.getStylesheets().add(getClass().getResource(TextHelper.CSS_SHEET).toExternalForm());
 		primaryStage.getIcons().add(guiHelper.getIcon());
 		
 		primaryStage.setTitle(TextHelper.APP_TITLE);

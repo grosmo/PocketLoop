@@ -1,6 +1,6 @@
 package presentation.uicomponents;
 
-import business.AudioSamplePlayer;
+import business.IAudioSamplePlayer;
 import ddf.minim.AudioSample;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import javafx.scene.Cursor;
@@ -8,15 +8,19 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import presentation.TextHelper;
 
 public class WaveformCanvas extends StackPane {
     private static final int WAVEFORM_HEIGHT = 60;
     private static final int WAVEFORM_WIDTH = 400;
     private static final int HANDLE_WIDTH = 2;
-    private static final double HANDLE_SNAP_DISTANCE = 5.0;    
+    private static final double HANDLE_SNAP_DISTANCE = 5.0;   
+    
+    private static final String SAMPLE_LADE_FEHLER = "FEHLER: Sample konnte nicht geladen werden!";
+    private static final String WAVEFORM_LADE_FEHLER = "FEHLER beim Laden der Waveform: ";
     
     private Canvas canvas;
-    public AudioSamplePlayer sample;
+    public IAudioSamplePlayer sample;
     private float[] waveformData; 
     private int totalSamples;
     private float maxAmplitude = 1.0f;
@@ -25,13 +29,13 @@ public class WaveformCanvas extends StackPane {
     private boolean draggingStart = false;
     private boolean draggingEnd = false;
         
-    public WaveformCanvas(AudioSamplePlayer sample) {
+    public WaveformCanvas(IAudioSamplePlayer sample) {
         this.sample = sample;
         this.canvas = new Canvas(WAVEFORM_WIDTH, WAVEFORM_HEIGHT);
             
         getChildren().add(canvas);
         
-        this.getStyleClass().add("waveform-canvas");
+        this.getStyleClass().add(TextHelper.STYLECLASS_WAVEFORM_CANVAS);
         
         this.setMinWidth(0);
         this.setMinHeight(WAVEFORM_HEIGHT);
@@ -76,10 +80,10 @@ public class WaveformCanvas extends StackPane {
                 
                 if (maxAmplitude < 0.00001f) maxAmplitude = 0.00001f;
             } else {
-                System.err.println("FEHLER: Sample konnte nicht geladen werden!");
+                System.err.println(SAMPLE_LADE_FEHLER);
             }
         } catch (Exception e) {
-            System.err.println("FEHLER beim Laden der Waveform: " + e.getMessage());
+            System.err.println(WAVEFORM_LADE_FEHLER + e.getMessage());
         } finally {
             if (sampleIntern != null) {
                 try {

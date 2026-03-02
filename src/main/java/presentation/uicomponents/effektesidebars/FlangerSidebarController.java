@@ -3,6 +3,7 @@ package presentation.uicomponents.effektesidebars;
 import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class FlangerSidebarController extends BaseSidebarController<FlangerSidebar> {
 
@@ -18,6 +19,11 @@ public class FlangerSidebarController extends BaseSidebarController<FlangerSideb
     public void initialize() {
         setBasicEvents();
         initializeConditionsListener();
+
+        root().titleLabel.setText(TextHelper.EFFEKT_FLANGER_TITLE);
+        root().lblKnobRate.setText(TextHelper.EFFEKT_RATE_TITLE);
+        root().lblKnobDepth.setText(TextHelper.EFFEKT_DEPTH_TITLE);
+        root().lblKnobDelay.setText(TextHelper.EFFEKT_DELAY_TITLE);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(getServiceHelper().getAktuellesSample() != null){

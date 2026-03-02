@@ -7,12 +7,13 @@ import ddf.minim.ugens.Gain;
 import de.hsrm.mi.eibo.simpleplayer.SimpleMinim;
 import javafx.beans.property.SimpleBooleanProperty;
 
-public class AudioSamplePlayer {
+public class AudioSamplePlayer implements IAudioSamplePlayer {
     ServiceHelper serviceHelper;
     AudioOutput output;
     FilePlayer filePlayer;
     Thread playbackMinimThread;
     Thread loopThread;
+    
     EffectManager effectManager;
     protected EffectManager getEffectManager() {
         return effectManager;
@@ -22,23 +23,29 @@ public class AudioSamplePlayer {
     protected SampleModel getSampleModel(){
         return sampleModel;
     }
+    @Override
     public String getDisplayName(){
         return sampleModel.getDisplayName();
     }
+    @Override
     public String getFilePath(){
         return sampleModel.getFilePath();
     }
+    @Override
     public boolean isResampled(){
         return sampleModel.isResampled();
     }
     
     private SimpleBooleanProperty playingProperty = new SimpleBooleanProperty(false);
+    @Override
     public SimpleBooleanProperty playingProperty() {
         return playingProperty;
     }
+    @Override
     public boolean isPlaying(){
         return playingProperty.get();
     }
+    @Override
     public void setPlaying(Boolean isPlaying){
         playingProperty.set(isPlaying);
         if(isPlaying){
@@ -48,18 +55,22 @@ public class AudioSamplePlayer {
             stop();
     }
 
+    @Override
     public boolean isLoopSelected() {
         return sampleModel.isLoopSelected();
     }
+    @Override
     public void setLoopSelected(boolean loopSelected) {
         sampleModel.setLoopSelected(loopSelected);
     }
 
     Gain gain;
     float volume = 0.0f;
+    @Override
     public float getVolume() {
         return volume;
     }
+    @Override
     public void setVolume(float volume) {
         this.volume = volume;
         if (gain != null) {
@@ -71,16 +82,20 @@ public class AudioSamplePlayer {
     // -1 ist bis zum Ende
     int endFrame = -1; 
 
+    @Override
     public double getStartMilliseconds() {
         return (startFrame / (double)serviceHelper.SAMPLE_RATE) * 1000;
     }
+    @Override
     public void setStartMilliseconds(double ms) {
         this.startFrame = (int)(ms / 1000.0 * serviceHelper.SAMPLE_RATE);
     }
 
+    @Override
     public void setEndMilliseconds(double ms) {
         this.endFrame = (int)(ms / 1000.0 * serviceHelper.SAMPLE_RATE);
     }
+    @Override
     public double getEndMilliseconds() {
         if (endFrame <= 0) 
             return getTotalDurationMilliseconds();
@@ -93,6 +108,7 @@ public class AudioSamplePlayer {
         this.sampleModel = sampleModel;
     }
 
+    @Override
     public double getTotalDurationMilliseconds() {
         try {
             SimpleMinim tempMinim = new SimpleMinim();

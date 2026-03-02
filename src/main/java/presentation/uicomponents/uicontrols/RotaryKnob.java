@@ -8,6 +8,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.ArcType;
+import presentation.TextHelper;
 import presentation.uicomponents.PopupMessage;
 
 public class RotaryKnob extends StackPane {
@@ -41,7 +42,7 @@ public class RotaryKnob extends StackPane {
         this.max = max;
         this.value.set(initial);
         
-        this.getStyleClass().add("rotary-knob");
+        this.getStyleClass().add(TextHelper.STYLECLASS_ROTARY_KNOB);
         
         canvas = new Canvas(SIZE, SIZE);
         this.getChildren().add(canvas);
@@ -78,7 +79,7 @@ public class RotaryKnob extends StackPane {
     
     private void handleMouseReleased(MouseEvent event) {
         dragging = false;
-        new PopupMessage("neuer Wert " + String.format("%.2f", getValue()), this, -32, 0, 600);
+        new PopupMessage("neuer Wert " + String.format(TextHelper.FORMAT_DEZIMAL, getValue()), this, -32, 0, 600);
     }
     
     private void draw() {
@@ -102,7 +103,7 @@ public class RotaryKnob extends StackPane {
         double normalizedValue = (value.get() - min) / (max - min);
         double valueAngle = TOTAL_ANGLE * normalizedValue;
         
-        gc.setStroke(Color.web("#00b4a0"));
+        gc.setStroke(Color.web(TextHelper.COLOR_PRIMARY_GREEN));
         gc.setLineWidth(4);
         gc.strokeArc(
             centerX - KNOB_RADIUS, 

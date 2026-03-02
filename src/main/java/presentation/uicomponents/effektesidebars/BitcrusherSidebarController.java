@@ -4,6 +4,7 @@ import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import javafx.beans.property.BooleanProperty;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class BitcrusherSidebarController extends BaseSidebarController<BitcrusherSidebar> {
 
@@ -19,6 +20,11 @@ public class BitcrusherSidebarController extends BaseSidebarController<Bitcrushe
     public void initialize() {
         setBasicEvents();
         setSaveButtonEvent(EffectType.BITCRUSHER);
+
+        root().titleLabel.setText(TextHelper.EFFEKT_BITCRUSH_TITLE);
+        root().lblKnobBitDepth.setText(TextHelper.EFFEKT_DEPTH);
+        root().lblKnobSampleRate.setText(TextHelper.SAMPLE_RATE);
+        root().btnSave.setText(TextHelper.SAFE);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {            
             if(getServiceHelper().getAktuellesSample() != null) {

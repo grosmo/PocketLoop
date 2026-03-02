@@ -37,7 +37,7 @@ public abstract class BaseController <T extends Pane>{
         BaseView baseView = (BaseView) root;
         if(baseView != null){
             if(baseView.sampleRateLabel != null)
-                baseView.sampleRateLabel.setText(TextHelper.SAMPLE_RATE + serviceHelper.getMasterOutput().bufferSize());
+                baseView.sampleRateLabel.setText(TextHelper.SAMPLE_RATE + ": " + serviceHelper.getMasterOutput().bufferSize());
             baseView.stopAll.setOnAction(e -> onStopAllPlays());      
             baseView.playAll.setOnAction(e -> onPlayAll());
             baseView.selectAll.setOnAction(e -> onSelectAllSamples());

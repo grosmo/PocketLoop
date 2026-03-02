@@ -3,7 +3,7 @@ package business;
 public class SampleModel {
 
     String filePath;
-    public String getFilePath(){
+    protected String getFilePath(){
         return filePath;
     }
     protected void setFilePath(String path){
@@ -11,7 +11,7 @@ public class SampleModel {
     }
 
     boolean resampled;
-    public boolean isResampled(){
+    protected boolean isResampled(){
         return resampled;
     }
     protected void setResampled(boolean resampled){
@@ -19,10 +19,10 @@ public class SampleModel {
     }
 
     boolean loopSelected;
-    public boolean isLoopSelected() {
+    protected boolean isLoopSelected() {
         return loopSelected;
     }
-    public void setLoopSelected(boolean loopSelected) {
+    protected void setLoopSelected(boolean loopSelected) {
         this.loopSelected = loopSelected;
     }
 

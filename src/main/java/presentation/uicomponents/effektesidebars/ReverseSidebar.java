@@ -6,15 +6,17 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import javafx.scene.text.TextAlignment;
+import presentation.TextHelper;
 
 public class ReverseSidebar extends BaseEffektSidebar {
+
+    Label infoLabel;
     
     public ReverseSidebar(){
 
         HBox rotatedLabelBox = createRotatedLabelBox(
-            "Reverse", 
+            new String(), 
             new Insets(0, 0, 50, -11)
         );
 
@@ -26,13 +28,13 @@ public class ReverseSidebar extends BaseEffektSidebar {
         toggleBox.setAlignment(Pos.BOTTOM_CENTER);
         this.getChildren().add(toggleBox);
 
-        Label infoLabel = new Label("Spielt das Audio\nrückwärts ab.");
-        infoLabel.setFont(new Font(14));
+        infoLabel = new Label(new String());
+        infoLabel.setFont(TextHelper.FONT_13);
         infoLabel.setTextAlignment(TextAlignment.CENTER);
         infoLabel.setWrapText(true);
         
-        btnSave = new Button("Speichern");
-        btnSave.getStyleClass().add("btn-save-effect");
+        btnSave = new Button(new String());
+        btnSave.getStyleClass().add(TextHelper.STYLECLASS_BTN_SAFE);
         
         contentBox = createContentBox();
         contentBox.getChildren().addAll(

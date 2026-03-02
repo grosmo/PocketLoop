@@ -5,9 +5,9 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
-import javafx.scene.text.Font;
 import javafx.stage.Popup;
 import javafx.util.Duration;
+import presentation.TextHelper;
 
 public class PopupMessage {        
     public PopupMessage(String text, Node ownerNode, double offsetX, double offsetY, int millis) {
@@ -21,7 +21,7 @@ public class PopupMessage {
     private void popupMessageIntern(String text , Node ownerNode, double offsetX, double offsetY, int millis, boolean overlay) {
     	Label msg = new Label(text);
     	msg.setOpacity(0.95);
-		msg.setId("popup-message");
+		msg.setId(TextHelper.POPUP_MSG_ID);
 
     	Popup popup = new Popup();
     	popup.getContent().add(msg);
@@ -39,7 +39,7 @@ public class PopupMessage {
         	msg.setMinSize(windowWidth, windowHeight);
         	msg.setPrefSize(windowWidth, windowHeight);
         	msg.setAlignment(Pos.CENTER);
-			msg.setFont(new Font(40));
+			msg.setFont(TextHelper.FONT_40);
 			msg.setWrapText(true);
         	
         	popup.show(ownerNode.getScene().getWindow(), windowX, windowY);

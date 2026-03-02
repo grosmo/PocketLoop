@@ -10,7 +10,6 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Font;
 import presentation.TextHelper;
 
 public abstract class BaseView extends GridPane {
@@ -30,7 +29,7 @@ public abstract class BaseView extends GridPane {
         containerBox.setMaxWidth(Double.MAX_VALUE);
 
         viewLabel = new Label();
-        viewLabel.setFont(new Font(35));
+        viewLabel.setFont(TextHelper.FONT_35);
 
         sampleRateLabel = new Label();
 
@@ -43,19 +42,19 @@ public abstract class BaseView extends GridPane {
         HBox buttonContainer = new HBox();
         
         stopAll = new Button();
-        stopAll.getStyleClass().add("btn-stop-all");
+        stopAll.getStyleClass().add(TextHelper.STYLECLASS_BTN_STOP_ALL);
         Tooltip stopAllTooltip = new Tooltip(TextHelper.TOOLTIP_STOP_ALL);
         stopAllTooltip.setFont(TextHelper.FONT_TOOLTIP);
         stopAll.setTooltip(stopAllTooltip);
         
         playAll = new Button();
-        playAll.getStyleClass().add("btn-play-all");
+        playAll.getStyleClass().add(TextHelper.STYLECLASS_BTN_PLAY_ALL);
         Tooltip playAllTooltip = new Tooltip(TextHelper.TOOLTIP_PLAY_ALL);
         playAllTooltip.setFont(TextHelper.FONT_TOOLTIP);
         playAll.setTooltip(playAllTooltip);
 
         selectAll = new Button();
-        selectAll.getStyleClass().add("btn-select-all");
+        selectAll.getStyleClass().add(TextHelper.STYLECLASS_BTN_SELECT_ALL);
         Tooltip selectAllTooltip = new Tooltip(TextHelper.TOOLTIP_SELECT_ALL);
         selectAllTooltip.setFont(TextHelper.FONT_TOOLTIP);
         selectAll.setTooltip(selectAllTooltip);
@@ -63,7 +62,7 @@ public abstract class BaseView extends GridPane {
         selectAllContainer.setPadding(new Insets(28,5,0,0));
 
         deselectAll = new Button();
-        deselectAll.getStyleClass().add("btn-deselect-all");
+        deselectAll.getStyleClass().add(TextHelper.STYLECLASS_BTN_DESELECT_ALL);
         Tooltip deselectTooltip = new Tooltip(TextHelper.TOOLTIP_DESELECT_ALL);
         deselectTooltip.setFont(TextHelper.FONT_TOOLTIP);
         deselectAll.setTooltip(deselectTooltip);
@@ -80,7 +79,7 @@ public abstract class BaseView extends GridPane {
         toggleContainer.setPadding(new Insets(5, 10, 5, 10));
 
         switchView = new CheckBox();
-        switchView.getStyleClass().remove("check-box");
+        switchView.getStyleClass().remove(TextHelper.STYLECLASS_CHECK_BOX);
         toggleContainer.getChildren().add(switchView);
 
         containerBox.getChildren().addAll(labelBox, buttonContainer, toggleContainer);

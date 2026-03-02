@@ -4,6 +4,7 @@ import business.IServiceHelper;
 import business.effekteservices.EffectType;
 import javafx.beans.property.BooleanProperty;
 import presentation.GUIHelper;
+import presentation.TextHelper;
 
 public class ReverseSidebarController extends BaseSidebarController<ReverseSidebar> {
 
@@ -19,6 +20,10 @@ public class ReverseSidebarController extends BaseSidebarController<ReverseSideb
     public void initialize() {
         setBasicEvents();
         setSaveButtonEvent(EffectType.REVERSE);
+
+        root().titleLabel.setText(TextHelper.EFFEKT_REVERSE_TITLE);
+        root().infoLabel.setText(TextHelper.EFFEKT_REVERSE_INFO);
+        root().btnSave.setText(TextHelper.SAFE);
 
         root().toggleEffect.selectedProperty().addListener((observable, oldValue, newValue) -> {
             if(getServiceHelper().getAktuellesSample() != null) {
